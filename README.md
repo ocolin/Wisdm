@@ -44,7 +44,7 @@ This API has the parameter postcode, which can be a postcode in any format, whic
 
 Returns a list of objects containing property data that matches the given postcode.
 
-Examples:
+#### Examples:
 ```
 // GET /availability/123/postcode-lookup?postcode=sw1a1aa
 
@@ -84,7 +84,7 @@ This API has the parameters latitude and longitude, and is used to determine whe
 
 Returns a list of objects containing radios along with their possible RSL in dBm or null in the case of no signal or error, and result, which is a string containing either pass,failure or error.
 
-Examples:
+#### Examples:
 ```
 // GET /availability/123/check?latitude=54.11588&longitude=-1.4739
 
@@ -193,7 +193,8 @@ Examples:
 
 This API is used to determine whether a specific property has line-of-sight to any access_point. Returns a list of objects containing access points along with line-of-sight test result.
 
-Parameters:
+#### Parameters:
+
 height (Number): Height of the radio.
 latitude (Number): Latitude of the radio.
 longitude (Number): Longitude of the radio.
@@ -201,8 +202,7 @@ los_model_id (Number): ID of the LoS model.
 network_view_id (Number): ID of the network view.
 property_set_id (Number): ID of the property set.
 
-Examples:
-
+#### Examples:
 ```
 // GET /availability/check?height=10&latitude=53.9&longitude=-1.0&los_model_id=1&network_view_id=2&property_set_id=2
 
@@ -275,8 +275,7 @@ Examples:
 
 This API returns a list of availability checkers specifications.
 
-Examples:
-
+#### Examples:
 ```
 // GET /availability
 
@@ -298,7 +297,7 @@ Examples:
 
 This API creates a new availability checker specification.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the new availability checker.
 network_view_id (Number): ID of the network view.
@@ -307,7 +306,7 @@ los_model_id (Number): ID of the LoS model.
 good_sites_threshold (Number): Number of sites required to return a pass with this availability checker.
 completion_url (String): URL to provide in the results upon completion of a job.
 
-Example
+#### Example
 ```
 // POST /availability
 {
@@ -336,7 +335,7 @@ Example
 
 This API updates the given availability checker.
 
-Example
+#### Example
 ```
 // PATCH /availability/2
 {
@@ -360,7 +359,7 @@ Example
 
 This API deletes an availability checker.
 
-Example:
+#### Example:
 ```
 // DELETE /availability/1
 
@@ -376,7 +375,7 @@ This API takes latitude and longitude coordinates and reports about coverage at 
 https://availability-checker-map.wirelesscoverage.com/?api_key=ABCD1234&availability_checker_id=1
 ```
 
-Parameters:
+#### Parameters:
 
 latitude (Number): Latitude of the property.
 longitude (Number): Longitude of the property.
@@ -404,7 +403,7 @@ This API has the parameter postcode, which can be a postcode in any format, whic
 
 Returns a list of properties which match the given postcode.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/property-sets/123/postcode-lookup?postcode=sw1a1aa
 
@@ -426,7 +425,7 @@ Examples:
 
 This API returns a list of objects containing properties along with their possible RSL in dBm or null in the case of no signal or error; and result, which is a string containing either pass, failure or error.
 
-Parameters:
+#### Parameters:
 
 latitude (Number): Latitude of the access point.
 longitude (Number): Longitude of the access point.
@@ -436,12 +435,12 @@ height (Number): Height of the access point.
 antenna_id (Number): ID of the access point antenna.
 los_model_id (Number): ID of the LoS model.
 
-Optional parameters:
+#### Optional parameters:
 
 bearing (Number): Bearing of the access point.
 tilt (Number): Tilt of the access point.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/property-sets/123/ap-coverage
 {
@@ -492,7 +491,7 @@ Examples:
 
 This API returns an AP coverage report in a CSV format.
 
-Parameters:
+#### Parameters:
 
 latitude (Number): Latitude of the radio.
 longitude (Number): Longitude of the radio.
@@ -502,13 +501,13 @@ height (Number): Height of the radio.
 antenna_id (Number): ID for the radio antenna.
 los_model_id (Number): ID for the LoS model.
 
-Optional parameters:
+#### Optional parameters:
 
 bearing (Number): Bearing of the radio.
 tilt (Number): Tilt of the radio.
 pass-only (Boolean): Indicates whether results should be filtered to only pass results.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/property-sets/123/ap-coverage-report.csv?latitude=54.11588&longitude=-1.4739&antenna_id=1&eirp=36.0&frequency=4000&height=10&los_model_id=1&antenna_id=1
 
@@ -524,7 +523,7 @@ GET /properties/property-sets/{id}/ap-optimised-coverage
 
 This API allows a user to select an Antenna and have WISDM recommend the optimum direction and tilt to get maximum Property coverage. It requires sampling coverage in all directions horizontally as well as a given range of tilt in degrees.
 
-Parameters:
+#### Parameters:
 
 antenna_id (Number): ID of the radio antenna.
 eirp (Number): EIRP of the radio.
@@ -538,7 +537,7 @@ los_model_id (Number): ID of the LoS model.
 min_tilt (Number): Minimum tilt of the radio.
 max_tilt (Number): Maximum tilt of the radio.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/property-sets/2/ap-optimised-coverage?antenna_id=2&eirp=36&frequency=5800&height=28&tilt=0&bearing=25&latitude=53.9&longitude=-1.1&los_model_id=1&min_tilt=-7&max_tilt=7
 
@@ -558,7 +557,7 @@ Examples:
 
 This API returns a property set.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/property-sets/123
 
@@ -575,7 +574,7 @@ Examples:
 
 This API updates the given property set.
 
-Examples:
+#### Examples:
 ```
 // PATCH /properties/property-sets/2
 
@@ -601,7 +600,7 @@ Examples:
 
 This API deletes the given property set.
 
-Example:
+#### Example:
 ```
 // DELETE /properties/property-sets/1
 
@@ -613,7 +612,7 @@ Example:
 
 This API returns a list of all property sets.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/property-sets
 
@@ -659,7 +658,7 @@ Examples:
 
 This API returns a property.
 
-Examples:
+#### Examples:
 ```
 // GET /properties/123
 
@@ -680,7 +679,7 @@ Examples:
 
 This API imports new properties data from given csv file. CSV files should be UTF-8 encoded and should contain, as a minimum, latitude and longitude columns.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the new property set
 description (String): Description of the new property set
@@ -691,7 +690,7 @@ address_field (String): Address field name
 postcode_field (String): Postcode field name
 postcode_format (String): Postcode format
 
-Examples:
+#### Examples:
 ```
 // POST /properties/property-sets?name=test&description=test+import&lat_field=latitude&lng_field=longitude&ref_field=uprn&address_field=addressbase_postal&postcode_field=postcode&postcode_format=uk_postcode
 Content-Disposition: form-data; name="file"; filename="abp_york.csv"
@@ -717,7 +716,7 @@ Content-Type: text/csv
 
 This API returns a list of assignable user roles.
 
-Examples:
+#### Examples:
 ```
 // GET /auth/editable-roles
 
@@ -734,7 +733,7 @@ Examples:
 
 This API returns a list of roles available to the current user.
 
-Examples:
+#### Examples:
 ```
 // GET /auth/user/roles
 
@@ -763,7 +762,7 @@ Examples:
 
 This API returns a list of all users within the organization.
 
-Examples:
+#### Examples:
 ```
 // GET /auth/users
 
@@ -790,7 +789,7 @@ Examples:
 
 This API is used to return the current user’s details.
 
-Examples:
+#### Examples:
 ```
 // GET /auth/user
 
@@ -813,12 +812,12 @@ Examples:
 
 This API updates a user’s personal information.
 
-Parameters:
+#### Parameters:
 
 email (String): Email of the user’s account.
 realName (String): Name of the user’s account.
 
-Examples:
+#### Examples:
 ```
 // PATCH /auth/user
 {
@@ -833,14 +832,14 @@ Examples:
 
 This API updates a user’s account details.
 
-Parameters:
+#### Parameters:
 
 email (String): Email of the users account.
 enabled (Boolean): Status of the users account.
 realName (String): Name of the users account.
 roles (List of Strings): Roles of the users account.
 
-Examples:
+#### Examples:
 ```
 // PATCH /auth/users/2
 {
@@ -855,7 +854,7 @@ Examples:
 
 This API deletes a user’s account.
 
-Examples:
+#### Examples:
 ```
 // DELETE /auth/users/2
 
@@ -867,13 +866,13 @@ Examples:
 
 This API logs in as the given user.
 
-Parameters:
+#### Parameters:
 
 login (Object): Login object.
 email (String): Email address of user.
 password (String): Password of user.
 
-Examples:
+#### Examples:
 ```
 // POST /auth/login
 {
@@ -901,7 +900,7 @@ Examples:
 
 This API logs out a logged in user.
 
-Examples:
+#### Examples:
 ```
 // POST /auth/logout
 
@@ -915,7 +914,7 @@ Examples:
 
 This API returns a list of all API keys.
 
-Examples:
+#### Examples:
 ```
 // GET /auth/api-keys
 
@@ -935,12 +934,12 @@ Examples:
 
 This API creates a new API key.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the new API key.
 roles (List of String): Roles that belong to the API key.
 
-Examples:
+#### Examples:
 ```
 // POST /auth/api-keys
 {
@@ -962,7 +961,7 @@ Examples:
 
 This API deletes an API key.
 
-Examples:
+#### Examples:
 ```
 // DELETE /auth/api-keys/1
 
@@ -974,13 +973,13 @@ Examples:
 
 This API updates an API key.
 
-Parameters:
+#### Parameters:
 
 enabled (Boolean): Enable / disable API key.
 name (String): Name of the API key.
 roles (List of String): Roles of the API key.
 
-Examples:
+#### Examples:
 ```
 // PATCH /auth/api-keys/1
 {
@@ -1003,7 +1002,7 @@ Examples:
 
 This API returns a list of all antennas.
 
-Examples:
+#### Examples:
 ```
 // GET /antennas
 
@@ -1032,7 +1031,7 @@ Examples:
 
 This API returns an antenna by ID.
 
-Examples:
+#### Examples:
 ```
 // GET /antennas/1
 
@@ -1051,7 +1050,7 @@ Examples:
 
 This API returns a list of all favourited antennas.
 
-Examples:
+#### Examples:
 ```
 // GET /antennas/favourites
 
@@ -1074,7 +1073,7 @@ Examples:
 
 This API adds the given antenna into the list of favourite antennas.
 
-Examples:
+#### Examples:
 ```
 // POST /antennas/1/favourite
 
@@ -1086,7 +1085,7 @@ Examples:
 
 This API removes the given antenna from the list of favourite antennas.
 
-Examples:
+#### Examples:
 ```
 // DELETE /antennas/1/favourite
 
@@ -1098,7 +1097,7 @@ Examples:
 
 This API returns an antenna pattern by ID.
 
-Examples:
+#### Examples:
 ```
 // GET /antennas/1/pattern
 
@@ -1120,7 +1119,7 @@ Examples:
 
 This API returns a list of all LoS Models.
 
-Examples:
+#### Examples:
 ```
 // GET /los-models
 
@@ -1171,7 +1170,7 @@ Examples:
 
 This API returns a LoS Model by ID.
 
-Examples:
+#### Examples:
 ```
 // GET /los-models/1
 
@@ -1206,7 +1205,7 @@ Examples:
 
 This API creates a new LoS Model.
 
-Examples:
+#### Examples:
 ```
 // POST /los-models
 {
@@ -1254,7 +1253,7 @@ Examples:
 
 This API updates the given LoS Model with new values.
 
-Examples:
+#### Examples:
 ```
 // PATCH /los-models/6
 
@@ -1293,7 +1292,7 @@ Examples:
 
 This API deletes the given los model.
 
-Examples:
+#### Examples:
 ```
 // DELETE /los-models/6
 
@@ -1307,7 +1306,7 @@ Examples:
 
 This API returns a list of all Elevation Models.
 
-Examples:
+#### Examples:
 ```
 // GET /elevation-models
 
@@ -1330,7 +1329,7 @@ Examples:
 
 This API returns the boundary polygon for available data, for a given elevation model. This data is returned as GeoJSON MultiPolygon geometry object.
 
-Examples:
+#### Examples:
 ```
 // GET /elevation-models/1/coverage-area
 
@@ -1357,7 +1356,7 @@ Examples:
 
 This API returns a list of all networks.
 
-Examples:
+#### Examples:
 ```
 // GET /networks
 
@@ -1380,12 +1379,12 @@ Examples:
 
 This API creates a new network.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the network.
 colour (String): Colour of the network in hexadecimal format.
 
-Examples:
+#### Examples:
 ```
 // POST /networks
 {
@@ -1405,12 +1404,12 @@ Examples:
 
 This API updates a network.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the network.
 colour (String): Colour of the network in hexadecimal format.
 
-Examples:
+#### Examples:
 ```
 // PATCH /networks/2
 {
@@ -1430,7 +1429,7 @@ Examples:
 
 This API deletes a network.
 
-Examples:
+#### Examples:
 ```
 // DELETE /networks/2
 
@@ -1442,7 +1441,7 @@ Examples:
 
 Imports a CSV file containing a network of sites and radios and creates network(s).
 
-Parameters:
+#### Parameters:
 
 colour (String): Colour of the network in hexadecimal format.
 site_name_field (String): Name of the site
@@ -1460,7 +1459,7 @@ antenna_id_field (String): Antenna id field name in CSV file
 tilt_field (String): Tilt field name in CSV file
 bearing_field (String): Bearing field name in CSV file
 
-Examples:
+#### Examples:
 ```
 // POST /networks/import-networks?colour=#808080&site_name_field=Site_Name&network_field=Network&notes_field=Notes&site_height_field=Max_Height&lat_field=Latitude&lng_field=Longitude&aps_name_field=AP_Name&aps_site_field=Site_Name&aps_height_field=Installed_Height&frequency_field=Frequency_MHz&eirp_field=EIRP&antenna_id_field=Antenna_ID&tilt_field=Tilt_Deg&bearing_field=Bearing_Deg_FTN
 Content-Disposition: form-data; name="sites_file"; filename="sites_template.csv"
@@ -1483,7 +1482,7 @@ Content-Type: text/csv;
 
 Imports a CSV file containing one network of sites. The import_isotropic endpoint creates a network with user given sites and auto populates radio’s given the frequency and the EIRP. The antenna to be given to all sites can be selected, otherwise it will automatically be populated with isotropic antennas.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the network.
 colour (String): Colour of the network in hexadecimal format.
@@ -1496,7 +1495,7 @@ frequency_field (String): Frequency field name in CSV file
 eirp_field (String): EIRP field name in CSV file
 antenna_id (Number): ID of antenna to be given to all new sites
 
-Examples:
+#### Examples:
 ```
 // POST /networks/import-isotropic?name=simple+csv&colour=#808080&lat_field=Latitude&lng_field=Longitude&site_name_field=Site_Name&height_field=Max_Height&notes_field=Notes&frequency_field=Frequency_MHz&eirp_field=EIRP&antenna_id=1
 Content-Disposition: form-data; name="file"; filename="simple_import.csv"
@@ -1516,7 +1515,7 @@ Content-Type: text/csv;
 
 This API returns a list of all network views.
 
-Examples:
+#### Examples:
 ```
 // GET /networks/views
 
@@ -1540,12 +1539,12 @@ Examples:
 
 This API creates a new network view.
 
-Parameters:
+#### Parameters:
 
 name (String): name of the network view.
 networks (List of Numbers): IDs of the networks that belong to the network view.
 
-Examples:
+#### Examples:
 ```
 // POST /networks/views
 {
@@ -1565,12 +1564,12 @@ Examples:
 
 This API updates a network view.
 
-Parameters:
+#### Parameters:
 
 name (String): name of the network view.
 networks (List of Numbers): IDs of the networks that belong to the network view.
 
-Examples:
+#### Examples:
 ```
 // PATCH /networks/views/2
 {
@@ -1590,7 +1589,7 @@ Examples:
 
 This API deletes a network view.
 
-Examples:
+#### Examples:
 ```
 // DELETE /networks/views/2
 
@@ -1602,7 +1601,7 @@ Examples:
 
 This API returns a CSV of a network views coverage report.
 
-Examples:
+#### Examples:
 ```
 // GET /networks/views/2/coverage-report.csv
 
@@ -1617,7 +1616,7 @@ Test Site,1,Test Radio,1,-65.1,pass,1,4000,12347,,,54.316,1.374
 
 This API returns a CSV of a all sites in a given network view.
 
-Examples:
+#### Examples:
 ```
 // GET /networks/views/2/sites.csv
 
@@ -1641,7 +1640,7 @@ This API returns a CSV of a backhauls.
 
 This API returns a list of sites within a network.
 
-Examples:
+#### Examples:
 ```
 // GET /networks/43/sites
 
@@ -1678,7 +1677,7 @@ Examples:
 
 This API creates a new site.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the site.
 radios (List of Objects): Radios that belong to the site.
@@ -1687,7 +1686,7 @@ location (Object): Location of site.
 lat (Number): Latitude.
 lng (Number): Longitude.
 
-Examples:
+#### Examples:
 ```
 // POST /networks/43/sites
 {
@@ -1748,7 +1747,7 @@ Examples:
 
 This API returns a site.
 
-Examples:
+#### Examples:
 ```
 // GET /sites/320
 
@@ -1771,7 +1770,7 @@ Examples:
 
 This API updates a site.
 
-Parameters:
+#### Parameters:
 
 name (String): Name of the site.
 radios (List of Objects): Radios that belong to the site.
@@ -1780,7 +1779,7 @@ location (Object): Location of site.
 lat (Number): Latitude.
 lng (Number): Longitude.
 
-Examples:
+#### Examples:
 ```
 // PATCH /sites/320
 {
@@ -1807,7 +1806,7 @@ Examples:
 
 This API deletes a site.
 
-Examples:
+#### Examples:
 ```
 // DELETE /sites/320
 
@@ -1819,13 +1818,13 @@ Examples:
 
 This API creates a clone of a given site.
 
-Parameters:
+#### Parameters:
 
 location (Object): Location of new site.
 lat (Number): Latitude.
 lng (Number): Longitude.
 
-Examples:
+#### Examples:
 ```
 // POST /sites/3/clone
 location: {lat: 53.96077655335171, lng: -1.1054920341530874}
@@ -1866,7 +1865,7 @@ location: {lat: 53.96077655335171, lng: -1.1054920341530874}
 
 This API returns a list of sites that have line-of-sight to a given site.
 
-Parameters:
+#### Parameters:
 
 height (Number): Height of the site.
 latitude (Number): Latitude of site.
@@ -1874,7 +1873,7 @@ longitude (Number): Longitude of site.
 los_model_id (Integer): ID of LoS model to use.
 network_view_id (Number): ID of network view.
 
-Examples:
+#### Examples:
 ```
 // GET /networks/views/2/site-links?height=50&latitude=53.958685976316104&longitude=-1.1004869643185202&los_model_id=1&network_view_id=2
 
@@ -1925,7 +1924,7 @@ Examples:
 
 This API returns a list of a radios belonging to a site.
 
-Examples:
+#### Examples:
 ```
 // GET /sites/320/radios
 
@@ -1962,7 +1961,7 @@ Examples:
 
 This API creates a new radio within a site.
 
-Parameters:
+#### Parameters:
 
 antenna_id (Number): Antenna ID.
 bearing (Number): Bearing of radio.
@@ -1973,7 +1972,7 @@ tilt (Number): Tilt of radio.
 auto_facing (Boolean): Flag to indicate if the radio should automatically face its peer.
 is_access_point (Boolean): Flag to indicate if the radio is an access_point.
 
-Examples:
+#### Examples:
 ```
 // POST /sites/320/radios
 {
@@ -2003,7 +2002,7 @@ Examples:
 
 This API returns a radio by ID.
 
-Examples:
+#### Examples:
 ```
 // GET /radio/3
 
@@ -2024,7 +2023,7 @@ Examples:
 
 This API updates a radio.
 
-Parameters:
+#### Parameters:
 
 antenna_id (Number): Radio antenna ID.
 bearing (Number): Bearing of radio.
@@ -2033,7 +2032,7 @@ height (Number): Height of radio.
 name (String): Name of radio.
 tilt (Number): Tilt of radio.
 
-Examples:
+#### Examples:
 ```
 // PATCH /radios/3
 {
@@ -2061,7 +2060,7 @@ Examples:
 
 This API deletes a radio.
 
-Examples:
+#### Examples:
 ```
 // DELETE /radios/1
 
@@ -2075,7 +2074,7 @@ Examples:
 
 This API returns a list of backhauls
 
-Examples:
+#### Examples:
 ```
 // GET /backhauls
 
@@ -2108,7 +2107,7 @@ Examples:
 
 This API returns a backhaul object with the requested id
 
-Examples:
+#### Examples:
 ```
 // GET /backhauls/1
 
@@ -2129,7 +2128,7 @@ Examples:
 
 This API returns a list of backhauls connected to the given site.
 
-Examples:
+#### Examples:
 ```
 // GET /sites/1/backhauls/
 
@@ -2163,7 +2162,7 @@ Examples:
 
 This API deletes a backhaul object by id.
 
-Examples:
+#### Examples:
 ```
 // DELETE /backhauls/1
 
@@ -2175,7 +2174,7 @@ Examples:
 
 This API creates a new backhaul.
 
-Parameters:
+#### Parameters:
 
 name (String): Radios name.
 capacity (Number): Bandwidth in Mbps.
@@ -2184,13 +2183,13 @@ media_type (String): Media type of backhaul.
 site_a_id (Number): Site A ID.
 site_b_id (Number): Site B ID.
 
-Optional parameters:
+#### Optional parameters:
 
 distance (Number): Distance of link in meters, set to null for automatic.
 radio_a_id (Number): Radio A ID (in case of “wireless” media type).
 radio_b_id (Number): Radio B ID (in case of “wireless” media type).
 
-Examples:
+#### Examples:
 ```
 // //backhauls
 {
@@ -2222,7 +2221,7 @@ Examples:
 
 This API updates a backhaul.
 
-Parameters:
+#### Parameters:
 
 name (String): Radios name.
 capacity (Number): Bandwidth in Mbps.
@@ -2231,13 +2230,13 @@ media_type (String): Media type of backhaul.
 site_a_id (Number): Site A ID.
 site_b_id (Number): Site B ID.
 
-Optional parameters:
+#### Optional parameters:
 
 distance (Number): Distance of link in meters, set to null for automatic.
 radio_a_id (Number): Radio A ID (in case of “wireless” media type).
 radio_b_id (Number): Radio B ID (in case of “wireless” media type).
 
-Examples:
+#### Examples:
 ```
 // PATCH /backhauls/3
 {
@@ -2269,7 +2268,7 @@ Examples:
 
 This API returns a list of all map data sources.
 
-Examples:
+#### Examples:
 ```
 // GET /map-data-sources
 
@@ -2301,7 +2300,7 @@ Examples:
 
 This API returns a map data source object by ID.
 
-Examples:
+#### Examples:
 ```
 // GET /map-data-sources/1
 
@@ -2322,12 +2321,12 @@ Examples:
 
 This API updates a map data source.
 
-Parameters:
+#### Parameters:
 
 name (String): Map Data Source name.
 description (String): Map Data Source description.
 
-Examples:
+#### Examples:
 ```
 // PATCH /map-data-sources/2
 {
@@ -2351,7 +2350,7 @@ Examples:
 
 This API returns the PNG image data from a map data source of “raster_image” type.
 
-Examples:
+#### Examples:
 ```
 // GET /map-data-sources/1/raster-image
 
@@ -2363,7 +2362,7 @@ Binary PNG data
 
 This API returns the GeoJSON data from a map data source of “vector_geojson” type.
 
-Examples:
+#### Examples:
 ```
 // GET /map-data-sources/2/vector-geojson
 
@@ -2375,7 +2374,7 @@ GeoJSON Feature Object
 
 This API imports a CSV to create a “vector_geojson” layer of points, from each row of the CSV.
 
-Examples:
+#### Examples:
 ```
 // POST map-data-sources/vector-geojson/csv?name=Example+Import&description=Example&colour=#808080&lat_field=Latitude&lng_field=Longitude&is_heatmap=false
 
@@ -2393,7 +2392,7 @@ Examples:
 
 This API deletes a map data source from the account.
 
-Examples:
+#### Examples:
 ```
 // DELETE /map-data-sources/2
 
@@ -2407,7 +2406,7 @@ Examples:
 
 This API checks multiple points at each property and returns a list of LoS results at different parts of property.
 
-Examples:
+#### Examples:
 ```
 // GET /deep-coverage-points/points?los_model_id=1&latitude_a=53.9&longitude_a=-1.1&height_a=28&azimuth_a=25&tilt_a=0&eirp_a=36&antenna_id_a=2&latitude_b=53.9456652&longitude_b=-1.0927259&height_b=8&gain_b=20&frequency=5800&autofacing_a=false&autofacing_b=true
 
@@ -2452,7 +2451,7 @@ Examples:
 
 This API returns a path profile.
 
-Parameters:
+#### Parameters:
 
 los_model_id (Integer): ID of LoS model to use.
 latitude_a (Integer): Latitude of access point.
@@ -2471,7 +2470,7 @@ autofacing_a (Boolean): Whether the access point radio is assumed to be facing d
 autofacing_b (Boolean): Whether the property radio is assumed to be facing directly towards its peer.
 use_deep_coverage (Boolean): Whether LoS test will be performed on multiple points of a property.
 
-Examples:
+#### Examples:
 ```
 // GET /path-profile?los_model_id=1&latitude_a=53.9&longitude_a=-1.1&height_a=28&azimuth_a=25&tilt_a=0&eirp_a=36&antenna_id_a=2&latitude_b=53.9&longitude_b=-1.1&height_b=8&gain_b=20&frequency=5800&autofacing_a=false&autofacing_b=true&use_deep_coverage=true
 {
@@ -2522,7 +2521,7 @@ This API returns a viewshed image in requested image format. This WMS (Web Map S
 
 Please refer to: WMS specifications.
 
-Parameters:
+#### Parameters:
 
 bbox (Integer): Bounding box corners (lower left, upper right). Values must be in units of the specified SRS.
 format (String): Requested image format. Currently only “image/png” is supported.
@@ -2546,7 +2545,7 @@ ap_antenna_id_a (Integer): Antenna ID of access point
 rsl_stop_colours[] (List of Integer): List of colours representing RSL for each gradient stop, in hexadecimal RGBA format.
 rsl_stop_values[] (List of Integer): List of RSL values for each gradient stop, in dBm.
 
-Examples:
+#### Examples:
 ```
 // GET /viewsheds/single/wms?bbox=-122299.2,7156951.8,-117407.2,7161843.8&format=image/png&service=WMS&version=1.3.0&request=GetMap&srs=EPSG:3857&width=512&height=512&layers=viewshed&styles=viewshed&bearing=25&tilt=0&los_model_id=1&ap_frequency=5800&ap_eirp=36&ap_height=28&ap_latitude=53.9&ap_longitude=-1.1&ap_antenna_id=2&rsl_stop_colours[]=#AF4FAFBF&rsl_stop_colours[]=#4F4FAFBF&rsl_stop_colours[]=#4FAF4FBF&rsl_stop_colours[]=#AFAF4FBF&rsl_stop_colours[]=#AF4F4FBF&rsl_stop_values[]=-78&rsl_stop_values[]=-75&rsl_stop_values[]=-70&rsl_stop_values[]=-60&rsl_stop_values[]=-40
 ```
@@ -2557,13 +2556,13 @@ Examples:
 
 This API has the parameters latitude and longitude, and is used to fetch elevation data. Its returns ground height above sea level and surface height above ground level in meters.
 
-Parameters:
+#### Parameters:
 
 latitude (Number): Latitude of the location.
 longitude (Number): Longitude of the location.
 los_model_id (Number): ID of the LoS model.
 
-Examples:
+#### Examples:
 ```
 // GET /elevation-data?latitude=53.9&longitude=-1.0&los_model_id=6
 {
@@ -2578,7 +2577,7 @@ Examples:
 
 This API returns a PDF report for a single property. The report contains information about the property and access point, as well as a deep coverage check.
 
-Parameters:
+#### Parameters:
 
 los_model_id (Integer): ID of LoS model to use.
 latitude_a (Integer): Latitude of property.
@@ -2602,7 +2601,7 @@ property_id (Integer): Property ID.
 site_id (Integer): Site ID.
 radio_id (Integer): Radio ID.
 
-Examples:
+#### Examples:
 ```
 // POST /reports/engineer
 
@@ -2639,12 +2638,12 @@ Examples:
 
 This API returns a PDF report for a single backhaul. The report contains information both sites and the backhaul, as well as a path profile.
 
-Parameters:
+#### Parameters:
 
 backhaul_id (Integer): ID of backhaul to use
 los_model_id (Integer): ID of LoS model to use
 
-Examples:
+#### Examples:
 ```
 // POST /reports/backhaul
 
