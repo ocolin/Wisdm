@@ -5,6 +5,7 @@ declare( strict_types = 1 );
 namespace Ocolin\Wisdm;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Ocolin\Env\EasyEnv;
 
 class Wisdm
@@ -68,11 +69,19 @@ class Wisdm
 /*
 ---------------------------------------------------------------------------- */
 
+    /**
+     * @param string $path
+     * @param array $params
+     * @param array $body
+     * @param array $headers
+     * @return object
+     * @throws GuzzleException
+     */
     public function create(
         string $path,
-        array $params  = [],
-        array $body    = [],
-        array $headers = []
+         array $params  = [],
+         array $body    = [],
+         array $headers = []
     ) : object
     {
         $this->path   = $path;
@@ -80,12 +89,106 @@ class Wisdm
         $this->parse_URI();
 
         return $this->http->post(
-            uri: $this->path,
-            params: $this->params,
-            body: $body,
+                uri: $this->path,
+             params: $this->params,
+               body: $body,
             headers: $headers
         );
     }
+
+
+/*
+---------------------------------------------------------------------------- */
+
+    /**
+     * @param string $path
+     * @param array $params
+     * @param array $body
+     * @param array $headers
+     * @return object
+     * @throws GuzzleException
+     */
+    public function get(
+        string $path,
+         array $params  = [],
+         array $body    = [],
+         array $headers = []
+    ) : object
+    {
+        $this->path   = $path;
+        $this->params = $params;
+        $this->parse_URI();
+
+        return $this->http->get(
+                uri: $this->path,
+             params: $this->params,
+               body: $body,
+            headers: $headers
+        );
+    }
+
+
+/*
+---------------------------------------------------------------------------- */
+
+    /**
+     * @param string $path
+     * @param array $params
+     * @param array $body
+     * @param array $headers
+     * @return object
+     * @throws GuzzleException
+     */
+    public function update(
+        string $path,
+         array $params  = [],
+         array $body    = [],
+         array $headers = []
+    ) : object
+    {
+        $this->path   = $path;
+        $this->params = $params;
+        $this->parse_URI();
+
+        return $this->http->patch(
+                uri: $this->path,
+             params: $this->params,
+               body: $body,
+            headers: $headers
+        );
+    }
+
+
+/*
+---------------------------------------------------------------------------- */
+
+    /**
+     * @param string $path
+     * @param array $params
+     * @param array $body
+     * @param array $headers
+     * @return object
+     * @throws GuzzleException
+     */
+    public function delete(
+        string $path,
+         array $params  = [],
+         array $body    = [],
+         array $headers = []
+    ) : object
+    {
+        $this->path   = $path;
+        $this->params = $params;
+        $this->parse_URI();
+
+        return $this->http->delete(
+                uri: $this->path,
+             params: $this->params,
+               body: $body,
+            headers: $headers
+        );
+    }
+
 
 /*
 ---------------------------------------------------------------------------- */

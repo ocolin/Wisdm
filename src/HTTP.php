@@ -40,8 +40,8 @@ class HTTP
             'base_uri'        => $this->base_uri,
             'verify'          => $verify,
             'http_errors'     => $errors,
-            'timeout'         => 30,
-            'connect_timeout' => 30
+            'timeout'         => 600,
+            'connect_timeout' => 600
         ]);
     }
 

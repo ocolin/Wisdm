@@ -1,6 +1,68 @@
 # Wisdm
 
-## TOC
+## Usage
+
+---
+
+### Environment variables
+
+Library can use environment variables for the URL and token. These parameters can also be specified when instantiating the class. If these environment variables are not set in instantiation and not already present from a library calling this library, it will check for the file .env in the root directory.
+
+WISDM_BASE_URI - The URL of the API server
+
+WISDM_TOKEN - The Authenticaion token
+
+---
+
+### Instantiation
+
+Creating an instance of the class. By default no parameters are needed if environment variables are set. However parameters can be set here as an option.
+
+```
+$wism = new Wisdm();
+```
+
+#### Parameters (optional)
+
+* $client - A Guzzle HTTP client with connection information already set
+* $base_uri - The Base URI of the API server. Check .env.example file
+* $token - Authentication token for API server
+
+---
+### Call
+
+Making an API call. 
+
+```
+$output = $wisdm->call(
+   path: '/networks/{id}'
+   method: 'patch'
+   params: [ 'id' => 1 ],
+   body: [ 'name' => 'new name' ]
+);
+```
+
+#### Parameters
+
+* path - The URI path of the API call to make. If you include variables like {id}, these can be replaced with values of any matching keys in the 'params' parameter. Or you can manually include the variables in the path before calling library if preferred.
+* method - HTTP method to use for API call. Leaving this parameter out will default to the HTTP GET method.
+* params - Any parameters to be used in the URL of the API call. Als if any parameter keys match variable names in the path, they will update the path with the value of that key. Not all calls need parameters.
+* body - Will add data to the body of the request. This can be an object, an array, or a string. Not all calls need a body. 
+
+---
+
+### Additional calls
+
+The call() function can handle every type of API call. There are however other calls which have pre-set HTTP methods if perferred:
+
+* get() [GET METHOD]
+* create() [POST METHOD]
+* update() [PATCH METHOD]
+* delete() [DELETE METHOD]
+
+---
+
+## Manual TOC
 
 1. [Introduction](#Introduction)
    * URL
@@ -206,7 +268,9 @@ Returns a list of objects containing property data that matches the given postco
 
 ### <span style="color:green">GET</span> /availability/{id}/check
 
-This API has the parameters latitude and longitude, and is used to determine whether a specific property has line-of-sight to any radios. This API also accepts the additional parameter of height, to override the default height (in metres) of the client point.
+This API has the parameters latitude and longitude, and is used to determine whether a specific property has line-of-sight to any radios. This API also accepts the additional parameter of height, to override the default height (in metres) of the client point. 
+
+Availability Checkers are set up in the Admin section of the WISDM GUI.
 
 Returns a list of objects containing radios along with their possible RSL in dBm or null in the case of no signal or error, and result, which is a string containing either pass,failure or error.
 

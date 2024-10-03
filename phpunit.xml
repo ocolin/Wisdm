@@ -12,7 +12,9 @@
 <!--            <file>tests/NetworksTest.php</file>-->
 <!--            <file>tests/NetworksViewsTest.php</file>-->
 <!--            <file>tests/LosModelsTest.php</file>-->
-            <file>tests/AvailabilityTest.php</file>
+<!--            <file>tests/AvailabilityTest.php</file>-->
+<!--            <file>tests/PropertiesTest.php</file>-->
+            <file>tests/AntennasTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

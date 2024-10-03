@@ -9,7 +9,7 @@ use Ocolin\Wisdm\Wisdm;
 
 class AvailabilityTest extends TestBase
 {
-    /*
+
     public function testGet()
     {
         $wisdm = new Wisdm();
@@ -17,9 +17,64 @@ class AvailabilityTest extends TestBase
         $this->globalTest( result: $result );
         $this->assertEquals( expected: 200, actual: $result->status );
         $this->assertEquals( expected: 'OK', actual: $result->status_message );
-        $this->assertIsObject( actual: $result->body );
+        $this->assertIsArray( actual: $result->body );
+    }
+
+
+    /*
+    public function testCheckerMap()
+    {
+        // THIS TEST CAN TAKE 4 MINUTES TO RUN.
+        $wisdm = new Wisdm();
+        $result = $wisdm->call(
+            path: '/availability/{id}/availability-checker-map',
+            params: [
+                'id' => 92,
+                'latitude' => 36.983972,
+                'longitude' => -121.977748,
+            ]
+        );
+        $this->globalTest( result: $result );
+        $this->assertEquals( expected: 200, actual: $result->status );
+        $this->assertEquals( expected: 'OK', actual: $result->status_message );
+        $this->assertIsArray( actual: $result->body );
+        print_r( $result );
     }
     */
+
+    public function testPostcode()
+    {
+        $wisdm = new Wisdm();
+        $result = $wisdm->call(
+            path: '/availability/{id}/postcode-lookup',
+            params: [
+                'id' => 92,
+                'postcode' => '95060'
+            ]
+        );
+        $this->globalTest( result: $result );
+        $this->assertEquals( expected: 200, actual: $result->status );
+        $this->assertEquals( expected: 'OK', actual: $result->status_message );
+        $this->assertIsArray( actual: $result->body );
+    }
+
+
+    public function testAvailabilityCheck()
+    {
+        $wisdm = new Wisdm();
+        $result = $wisdm->call(
+            path: '/availability/{id}/check',
+            params: [
+                'id' => 92,
+                'latitude' => 36.983972,
+                'longitude' => -121.977748,
+            ]
+        );
+        $this->globalTest( result: $result );
+        print_r( $result );
+    }
+
+
 
     public function testCheck()
     {
@@ -39,13 +94,5 @@ class AvailabilityTest extends TestBase
         $this->assertEquals( expected: 200, actual: $result->status );
         $this->assertEquals( expected: 'OK', actual: $result->status_message );
         $this->assertIsArray( actual: $result->body );
-
-        foreach( $result->body as $ap )
-        {
-            if( $ap->result == 'pass' ) {
-                print_r( $ap );
-                echo "--------------\n";
-            }
-        }
     }
 }

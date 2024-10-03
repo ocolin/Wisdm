@@ -46,7 +46,6 @@ class NetworksViewsTest extends TestBase
         $result = $wisdm->call(
             path: '/networks/views',
         );
-        print_r( $result );
         $this->globalTest( result: $result );
         $this->assertEquals( expected: 200, actual: $result->status );
         $this->assertEquals( expected: 'OK', actual: $result->status_message );
