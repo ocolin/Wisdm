@@ -2,11 +2,11 @@
 
 ## TOC
 
-1. Introduction
+1. [Introduction](#Introduction)
    * URL
-2. Authentication
+2. [Authentication](#Authentication)
    * Errors
-3. Availability
+3. [Availability](#Availability)
    * GET /availability/{id}/postcode-lookup
    * GET /availability/{id}/check
    * GET /availability/check
@@ -15,7 +15,7 @@
    * PATCH /availability/{id}
    * DELETE /availability/{id}
    * GET /availability/{id}/availability-checker-map
-1. Properties
+1. [Properties](#Properties)
    * GET /properties/property-sets/{id}/postcode-lookup
    * GET /properties/property-sets/{id}/ap-coverage
    * GET /properties/property-sets/{id}/ap-coverage-report.csv
@@ -26,7 +26,7 @@
    * GET /properties/property-sets
    * GET /properties/{id}
    * POST /properties/property-sets
-1. Account
+1. [Account](#Account)
    * GET /auth/editable-roles
    * GET /auth/user/roles
    * GET /auth/users
@@ -36,35 +36,35 @@
    * DELETE /auth/users/{id}
    * POST /auth/login
    * POST /auth/logout
-1. API Keys
+1. [API Keys](#API-Keys)
    * GET /auth/api-keys
    * POST /auth/api-keys
    * DELETE /auth/api-keys/{id}
    * PATCH /auth/api-keys/{id}
-1. Antennas
+1. [Antennas](#Antennas)
    * GET /antennas
    * GET /antennas/{id}
    * GET /antennas/favourites
    * POST /antennas/{id}/favourite
    * DELETE /antennas/{id}/favourite
    * GET /antennas/{id}/pattern
-1. LOS Models
+1. [LOS Models](#LOS-Models)
    * GET /los-models
    * GET /los-models/{id}
    * POST /los-models
    * PATCH /los-models/{id}
    * DELETE /los-models/{id}
-1. Elevation Models
+1. [Elevation Models](#Elevation-Models)
    * GET /elevation-models
    * GET /elevation-models/{id}/coverage-area
-1. Networks
+1. [Networks](#Networks)
    * GET /networks
    * POST /networks
    * PATCH /networks/{id}
    * DELETE /networks/{id}
    * POST /networks/import-networks
    * POST /networks/import-isotropic
-1. Network Views
+1. [Network Views](#Network-Views)
    * GET /networks/views
    * POST /networks/views
    * PATCH /networks/views/{id}
@@ -73,29 +73,29 @@
    * GET /networks/views/{id}/sites.csv
    * GET /networks/views/{id}/radios.csv
    * GET /networks/views/{id}/backhauls.csv
-1. Sites
+1. [Sites](#Sites)
    * GET /networks/{id}/sites
    * POST /networks/{id}/sites
    * GET /sites/{id}
    * PATCH /sites/{id}
    * DELETE /sites/{id}
    * POST /sites/{id}/clone
-1. Site Links
+1. [Site Links](#Site-Links)
    * GET /networks/views/{id}/site-links
-1. Radios
+1. [Radios](#Radios)
    * GET /sites/{id}/radios
    * POST /sites/{id}/radios
    * GET /radios/{id}
    * PATCH /radios/{id}
    * DELETE /radios/{id}
-1. Backhauls
+1. [Backhauls](#Backhauls)
    * GET /backhauls
    * GET /backhauls/{id}
    * GET /sites/{id}/backhauls/
    * DELETE /backhauls/{id}
    * POST /backhauls
    * PATCH /backhauls/{id}
-1. Map Data Sources
+1. [Map Data Sources](#Map-Data-Sources)
    * GET /map-data-sources
    * GET /map-data-sources/{id}
    * PATCH /map-data-sources/{id}
@@ -103,15 +103,15 @@
    * GET /map-data-sources/{id}/vector-geojson
    * POST /map-data-sources/vector-geojson/csv
    * DELETE /map-data-sources/{id}
-1. Deep Coverage
+1. [Deep Coverage](#Deep-Coverage)
    * GET /deep-coverage-points/points
-1. Path Profile
+1. [Path Profile](#Path-Profile)
    * GET /path-profile
-1. Viewsheds
+1. [Viewsheds](#Viewsheds)
    * GET /viewsheds/single/wms
-1. Elevation data
+1. [Elevation data](#Elevation-data)
    * GET /elevation-data
-1. Reports
+1. [Reports](#Reports)
    * POST /reports/engineer
    * POST /reports/backhaul
 
