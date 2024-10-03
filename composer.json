@@ -1,0 +1,32 @@
+{
+    "name": "ocolin/wisdm",
+    "description": "Basic Client for WISDM API",
+    "type": "library",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ocolin/EasyEnv"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.9",
+        "ocolin/easyenv": "^1.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^11.3"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ocolin\\Wisdm\\": "src/",
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Colin Miller",
+            "email": "ocolin@cruzio.com"
+        }
+    ]
+}

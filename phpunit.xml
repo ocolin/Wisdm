@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        stopOnFailure="true"
+        beStrictAboutChangesToGlobalState="true"
+        cacheDirectory=".phpunit.cache"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+>
+    <testsuites>
+        <testsuite name="Models">
+<!--            <file>tests/NetworksTest.php</file>-->
+<!--            <file>tests/NetworksViewsTest.php</file>-->
+<!--            <file>tests/LosModelsTest.php</file>-->
+            <file>tests/AvailabilityTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

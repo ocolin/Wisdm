@@ -1,7 +1,126 @@
 # Wisdm
 
+## TOC
+
+1. Introduction
+   * URL
+2. Authentication
+   * Errors
+3. Availability
+   * GET /availability/{id}/postcode-lookup
+   * GET /availability/{id}/check
+   * GET /availability/check
+   * GET /availability
+   * POST /availability
+   * PATCH /availability/{id}
+   * DELETE /availability/{id}
+   * GET /availability/{id}/availability-checker-map
+1. Properties
+   * GET /properties/property-sets/{id}/postcode-lookup
+   * GET /properties/property-sets/{id}/ap-coverage
+   * GET /properties/property-sets/{id}/ap-coverage-report.csv
+   * GET /properties/property-sets/{id}/ap-optimised-coverage
+   * GET /properties/property-sets/{id}for
+   * PATCH /properties/property-sets/{id}
+   * DELETE /properties/property-sets/{id}
+   * GET /properties/property-sets
+   * GET /properties/{id}
+   * POST /properties/property-sets
+1. Account
+   * GET /auth/editable-roles
+   * GET /auth/user/roles
+   * GET /auth/users
+   * GET /auth/user
+   * PATCH /auth/user
+   * PATCH /auth/users/{id}
+   * DELETE /auth/users/{id}
+   * POST /auth/login
+   * POST /auth/logout
+1. API Keys
+   * GET /auth/api-keys
+   * POST /auth/api-keys
+   * DELETE /auth/api-keys/{id}
+   * PATCH /auth/api-keys/{id}
+1. Antennas
+   * GET /antennas
+   * GET /antennas/{id}
+   * GET /antennas/favourites
+   * POST /antennas/{id}/favourite
+   * DELETE /antennas/{id}/favourite
+   * GET /antennas/{id}/pattern
+1. LOS Models
+   * GET /los-models
+   * GET /los-models/{id}
+   * POST /los-models
+   * PATCH /los-models/{id}
+   * DELETE /los-models/{id}
+1. Elevation Models
+   * GET /elevation-models
+   * GET /elevation-models/{id}/coverage-area
+1. Networks
+   * GET /networks
+   * POST /networks
+   * PATCH /networks/{id}
+   * DELETE /networks/{id}
+   * POST /networks/import-networks
+   * POST /networks/import-isotropic
+1. Network Views
+   * GET /networks/views
+   * POST /networks/views
+   * PATCH /networks/views/{id}
+   * DELETE /networks/views/{id}
+   * GET /networks/views/{id}/coverage-report.csv
+   * GET /networks/views/{id}/sites.csv
+   * GET /networks/views/{id}/radios.csv
+   * GET /networks/views/{id}/backhauls.csv
+1. Sites
+   * GET /networks/{id}/sites
+   * POST /networks/{id}/sites
+   * GET /sites/{id}
+   * PATCH /sites/{id}
+   * DELETE /sites/{id}
+   * POST /sites/{id}/clone
+1. Site Links
+   * GET /networks/views/{id}/site-links
+1. Radios
+   * GET /sites/{id}/radios
+   * POST /sites/{id}/radios
+   * GET /radios/{id}
+   * PATCH /radios/{id}
+   * DELETE /radios/{id}
+1. Backhauls
+   * GET /backhauls
+   * GET /backhauls/{id}
+   * GET /sites/{id}/backhauls/
+   * DELETE /backhauls/{id}
+   * POST /backhauls
+   * PATCH /backhauls/{id}
+1. Map Data Sources
+   * GET /map-data-sources
+   * GET /map-data-sources/{id}
+   * PATCH /map-data-sources/{id}
+   * GET /map-data-sources/{id}/raster-image
+   * GET /map-data-sources/{id}/vector-geojson
+   * POST /map-data-sources/vector-geojson/csv
+   * DELETE /map-data-sources/{id}
+1. Deep Coverage
+   * GET /deep-coverage-points/points
+1. Path Profile
+   * GET /path-profile
+1. Viewsheds
+   * GET /viewsheds/single/wms
+1. Elevation data
+   * GET /elevation-data
+1. Reports
+   * POST /reports/engineer
+   * POST /reports/backhaul
+
+
 ## Introduction
+
 ### URL
+
+---
 
 The WISDM API for the production WISDM instance has a base URL of:
 
@@ -9,11 +128,15 @@ The WISDM API for the production WISDM instance has a base URL of:
 
 ### Authentication
 
+---
+
 The WISDM API uses API keys to authenticate requests, To use your API key, input the string of characters under the X-API-Key header on every HTTP request.
 
 API requests without authentication will fail.
 
 ### Errors
+
+---
 
 WISDM uses conventional HTTP response codes to indicate the success or failure of an API request.
 
@@ -38,7 +161,9 @@ Something went wrong on WISDM's end.
 
 ## Availability
 
-### GET /availability/{id}/postcode-lookup
+---
+
+### <span style="color:green">GET</span> /availability/{id}/postcode-lookup
 
 This API has the parameter postcode, which can be a postcode in any format, which is looked up against the list of properties. To use the end point by a third party, an api key must be created with a role of availability_checker_map
 
@@ -77,12 +202,19 @@ Returns a list of objects containing property data that matches the given postco
     "error": "bad_postcode"
 }
 ```
+---
 
-### GET /availability/{id}/check
+### <span style="color:green">GET</span> /availability/{id}/check
 
 This API has the parameters latitude and longitude, and is used to determine whether a specific property has line-of-sight to any radios. This API also accepts the additional parameter of height, to override the default height (in metres) of the client point.
 
 Returns a list of objects containing radios along with their possible RSL in dBm or null in the case of no signal or error, and result, which is a string containing either pass,failure or error.
+
+#### Parameters
+
+* latitude
+* Longitude
+* height (optional)
 
 #### Examples:
 ```
@@ -188,19 +320,20 @@ Returns a list of objects containing radios along with their possible RSL in dBm
     }
 ]
 ```
+---
 
-### GET /availability/check
+### <span style="color:green">GET</span> /availability/check
 
 This API is used to determine whether a specific property has line-of-sight to any access_point. Returns a list of objects containing access points along with line-of-sight test result.
 
 #### Parameters:
 
-* height (Number): Height of the radio.
-* latitude (Number): Latitude of the radio.
-* longitude (Number): Longitude of the radio.
-* los_model_id (Number): ID of the LoS model.
-* network_view_id (Number): ID of the network view.
-* property_set_id (Number): ID of the property set.
+* **height** (Number): Height of the radio.
+* **latitude** (Number): Latitude of the radio.
+* **longitude** (Number): Longitude of the radio.
+* **los_model_id** (Number): ID of the LoS model.
+* **network_view_id** (Number): ID of the network view.
+* **property_set_id** (Number): ID of the property set.
 
 #### Examples:
 ```
@@ -271,7 +404,9 @@ This API is used to determine whether a specific property has line-of-sight to a
 ]
 ```
 
-### GET /availability
+---
+
+### <span style="color:green">GET</span> /availability
 
 This API returns a list of availability checkers specifications.
 
@@ -292,19 +427,20 @@ This API returns a list of availability checkers specifications.
     }
 ]
 ```
+---
 
-### POST /availability
+### <span style="color:orange">POST</span> /availability
 
 This API creates a new availability checker specification.
 
 #### Parameters:
 
-* name (String): Name of the new availability checker.
-* network_view_id (Number): ID of the network view.
-* property_set_id (Number): ID of the property set.
-* los_model_id (Number): ID of the LoS model.
-* good_sites_threshold (Number): Number of sites required to return a pass with this availability checker.
-* completion_url (String): URL to provide in the results upon completion of a job.
+* **name** (String): Name of the new availability checker.
+* **network_view_id** (Number): ID of the network view.
+* **property_set_id** (Number): ID of the property set.
+* **los_model_id** (Number): ID of the LoS model.
+* **good_sites_threshold** (Number): Number of sites required to return a pass with this availability checker.
+* **completion_url** (String): URL to provide in the results upon completion of a job.
 
 #### Example
 ```
@@ -330,8 +466,8 @@ This API creates a new availability checker specification.
     "property_set_id": 2
 }
 ```
-
-### PATCH /availability/{id}
+----
+### <span style="color:yellow">PATCH</span> /availability/{id}
 
 This API updates the given availability checker.
 
@@ -354,8 +490,9 @@ This API updates the given availability checker.
     "property_set_id": 2
 }
 ```
+---
 
-### DELETE /availability/{id}
+### <span style="color:red">DELETE</span> /availability/{id}
 
 This API deletes an availability checker.
 
@@ -366,8 +503,9 @@ This API deletes an availability checker.
 // 200 - OK
 {}
 ```
+---
 
-### GET /availability/{id}/availability-checker-map
+### <span style="color:green">GET</span> /availability/{id}/availability-checker-map
 
 This API takes latitude and longitude coordinates and reports about coverage at a given property, returning a cut-down set of results. To use this endpoint from a third-party domain, such as our “Availibity Checker Map” tool, an API key may be created with only the role of availability_checker_map.
 
@@ -377,8 +515,8 @@ https://availability-checker-map.wirelesscoverage.com/?api_key=ABCD1234&availabi
 
 #### Parameters:
 
-* latitude (Number): Latitude of the property.
-* longitude (Number): Longitude of the property.
+* **latitude** (Number): Latitude of the property.
+* **longitude** (Number): Longitude of the property.
 
 Examples:
 ```
@@ -398,7 +536,9 @@ Examples:
 
 ## Properties
 
-### GET /properties/property-sets/{id}/postcode-lookup
+---
+
+### <span style="color:green">GET</span> /properties/property-sets/{id}/postcode-lookup
 
 This API has the parameter postcode, which can be a postcode in any format, which is looked up against the list of properties.
 
@@ -421,25 +561,25 @@ Returns a list of properties which match the given postcode.
     }
 ]
 ```
-
-### GET /properties/property-sets/{id}/ap-coverage
+---
+### <span style="color:green">GET</span> /properties/property-sets/{id}/ap-coverage
 
 This API returns a list of objects containing properties along with their possible RSL in dBm or null in the case of no signal or error; and result, which is a string containing either pass, failure or error.
 
 #### Parameters:
 
-* latitude (Number): Latitude of the access point.
-* longitude (Number): Longitude of the access point.
-* eirp (Number): EIRP of the access point.
-* frequency (Number): Frequency of the access point.
-* height (Number): Height of the access point.
-* antenna_id (Number): ID of the access point antenna.
-* los_model_id (Number): ID of the LoS model.
+* **latitude** (Number): Latitude of the access point.
+* **longitude** (Number): Longitude of the access point.
+* **eirp** (Number): EIRP of the access point.
+* **frequency** (Number): Frequency of the access point.
+* **height** (Number): Height of the access point.
+* **antenna_id** (Number): ID of the access point antenna.
+* **los_model_id** (Number): ID of the LoS model.
 
 #### Optional parameters:
 
-* bearing (Number): Bearing of the access point.
-* tilt (Number): Tilt of the access point.
+* **bearing** (Number): Bearing of the access point.
+* **tilt** (Number): Tilt of the access point.
 
 #### Examples:
 ```
@@ -487,26 +627,26 @@ This API returns a list of objects containing properties along with their possib
     ]
 }
 ```
-
-### GET /properties/property-sets/{id}/ap-coverage-report.csv
+---
+### <span style="color:green">GET</span> /properties/property-sets/{id}/ap-coverage-report.csv
 
 This API returns an AP coverage report in a CSV format.
 
 #### Parameters:
 
-* latitude (Number): Latitude of the radio.
-* longitude (Number): Longitude of the radio.
-* eirp (Number): EIRP of the radio.
-* frequency (Number): Frequency of the radio.
-* height (Number): Height of the radio.
-* antenna_id (Number): ID for the radio antenna.
-* los_model_id (Number): ID for the LoS model.
+* **latitude** (Number): Latitude of the radio.
+* **longitude** (Number): Longitude of the radio.
+* **eirp** (Number): EIRP of the radio.
+* **frequency** (Number): Frequency of the radio.
+* **height** (Number): Height of the radio.
+* **antenna_id** (Number): ID for the radio antenna.
+* **los_model_id** (Number): ID for the LoS model.
 
 #### Optional parameters:
 
-* bearing (Number): Bearing of the radio.
-* tilt (Number): Tilt of the radio.
-* pass-only (Boolean): Indicates whether results should be filtered to only pass results.
+* **bearing** (Number): Bearing of the radio.
+* **tilt** (Number): Tilt of the radio.
+* **pass-only** (Boolean): Indicates whether results should be filtered to only pass results.
 
 #### Examples:
 ```
@@ -519,24 +659,24 @@ pass,-65.659,1,1000,12345,1 Foo Street,SW1A 1AA,54.116,-1.474
 pass,-75.271,1,1000,12346,2 Foo Street,SW1A 1AA,54.111,-1.512
 failure,,0,1000,12347,3 Foo Street,SW1A 1AA,54.216,-1.479
 ```
-
-GET /properties/property-sets/{id}/ap-optimised-coverage
+---
+### <span style="color:green">GET</span> /properties/property-sets/{id}/ap-optimised-coverage
 
 This API allows a user to select an Antenna and have WISDM recommend the optimum direction and tilt to get maximum Property coverage. It requires sampling coverage in all directions horizontally as well as a given range of tilt in degrees.
 
 #### Parameters:
 
-* antenna_id (Number): ID of the radio antenna.
-* eirp (Number): EIRP of the radio.
-* frequency (Number): Frequency of the radio.
-* height (Number): Height of the radio.
-* tilt (Number): Tilt of the radio.
-* bearing (Number): Bearing of the radio.
-* latitude (Number): Latitude of the radio.
-* longitude (Number): Longitude of the radio.
-* los_model_id (Number): ID of the LoS model.
-* min_tilt (Number): Minimum tilt of the radio.
-* max_tilt (Number): Maximum tilt of the radio.
+* **antenna_id** (Number): ID of the radio antenna.
+* **eirp** (Number): EIRP of the radio.
+* **frequency** (Number): Frequency of the radio.
+* **height** (Number): Height of the radio.
+* **tilt** (Number): Tilt of the radio.
+* **bearing** (Number): Bearing of the radio.
+* **latitude** (Number): Latitude of the radio.
+* **longitude** (Number): Longitude of the radio.
+* **los_model_id** (Number): ID of the LoS model.
+* **min_tilt** (Number): Minimum tilt of the radio.
+* **max_tilt** (Number): Maximum tilt of the radio.
 
 #### Examples:
 ```
@@ -553,8 +693,8 @@ This API allows a user to select an Antenna and have WISDM recommend the optimum
     "tilt_step": 1
 }
 ```
-
-### GET /properties/property-sets/{id}for
+---
+### <span style="color:green">GET</span> /properties/property-sets/{id}
 
 This API returns a property set.
 
@@ -571,7 +711,8 @@ This API returns a property set.
     "user_fields": [...],
 }
 ```
-### PATCH /properties/property-sets/{id}
+---
+### <span style="color:yellow">PATCH</span> /properties/property-sets/{id}
 
 This API updates the given property set.
 
@@ -596,8 +737,8 @@ This API updates the given property set.
     "user_provided": false
 }
 ```
-
-### DELETE /properties/property-sets/{id}
+---
+### <span style="color:red">DELETE</span> /properties/property-sets/{id}
 
 This API deletes the given property set.
 
@@ -608,8 +749,8 @@ This API deletes the given property set.
 // 200 - OK
 {}
 ```
-
-### GET /properties/property-sets
+---
+### <span style="color:green">GET</span> /properties/property-sets
 
 This API returns a list of all property sets.
 
@@ -654,8 +795,8 @@ This API returns a list of all property sets.
     }
 ]
 ```
-
-### GET /properties/{id}
+---
+### <span style="color:green">GET</span> /properties/{id}
 
 This API returns a property.
 
@@ -675,21 +816,21 @@ This API returns a property.
     "user_data": {}
 }
 ```
-
-### POST /properties/property-sets
+---
+### <span style="color:orange">POST</span> /properties/property-sets
 
 This API imports new properties data from given csv file. CSV files should be UTF-8 encoded and should contain, as a minimum, latitude and longitude columns.
 
 #### Parameters:
 
-* name (String): Name of the new property set
-* description (String): Description of the new property set
-* lat_field (String): Latitude field name
-* lng_field (String): Longitude field name
-* ref_field (String): UPRN field name
-* address_field (String): Address field name
-* postcode_field (String): Postcode field name
-* postcode_format (String): Postcode format
+* **name** (String): Name of the new property set
+* **description** (String): Description of the new property set
+* **lat_field** (String): Latitude field name
+* **lng_field** (String): Longitude field name
+* **ref_field** (String): UPRN field name
+* **address_field** (String): Address field name
+* **postcode_field** (String): Postcode field name
+* **postcode_format** (String): Postcode format
 
 #### Examples:
 ```
@@ -713,7 +854,9 @@ Content-Type: text/csv
 
 ## Account
 
-### GET /auth/editable-roles
+---
+
+### <span style="color:green">GET</span> /auth/editable-roles
 
 This API returns a list of assignable user roles.
 
@@ -729,8 +872,8 @@ This API returns a list of assignable user roles.
     "admin"
 ]
 ```
-
-### GET /auth/user/roles
+---
+### <span style="color:green">GET</span> /auth/user/roles
 
 This API returns a list of roles available to the current user.
 
@@ -758,8 +901,8 @@ This API returns a list of roles available to the current user.
     "write_properties",
 ]
 ```
-
-### GET /auth/users
+---
+### <span style="color:green">GET</span> /auth/users
 
 This API returns a list of all users within the organization.
 
@@ -785,8 +928,8 @@ This API returns a list of all users within the organization.
     }
 ]
 ```
-
-### GET /auth/user
+---
+### <span style="color:green">GET</span> /auth/user
 
 This API is used to return the current user’s details.
 
@@ -808,15 +951,15 @@ This API is used to return the current user’s details.
     ]
 }
 ```
-
-### PATCH /auth/user
+---
+### <span style="color:yellow">PATCH</span> /auth/user
 
 This API updates a user’s personal information.
 
 #### Parameters:
 
-* email (String): Email of the user’s account.
-* realName (String): Name of the user’s account.
+* **email** (String): Email of the user’s account.
+* **realName** (String): Name of the user’s account.
 
 #### Examples:
 ```
@@ -828,17 +971,17 @@ This API updates a user’s personal information.
 
 // 200 - OK
 ```
-
-### PATCH /auth/users/{id}
+---
+### <span style="color:yellow">PATCH</span> /auth/users/{id}
 
 This API updates a user’s account details.
 
 #### Parameters:
 
-* email (String): Email of the users account.
-* enabled (Boolean): Status of the users account.
-* realName (String): Name of the users account.
-* roles (List of Strings): Roles of the users account.
+* **email** (String): Email of the users account.
+* **enabled** (Boolean): Status of the users account.
+* **realName** (String): Name of the users account.
+* **roles** (List of Strings): Roles of the users account.
 
 #### Examples:
 ```
@@ -850,8 +993,8 @@ This API updates a user’s account details.
 
 // 200 - OK
 ```
-
-### DELETE /auth/users/{id}
+---
+### <span style="color:red">DELETE</span> /auth/users/{id}
 
 This API deletes a user’s account.
 
@@ -862,16 +1005,16 @@ This API deletes a user’s account.
 // 200 - OK
 []
 ```
-
-### POST /auth/login
+---
+### <span style="color:orange">POST</span> /auth/login
 
 This API logs in as the given user.
 
 #### Parameters:
 
-* login (Object): Login object.
-* email (String): Email address of user.
-* password (String): Password of user.
+* **login** (Object): Login object.
+* **email** (String): Email address of user.
+* **password** (String): Password of user.
 
 #### Examples:
 ```
@@ -896,8 +1039,8 @@ This API logs in as the given user.
     "roles": ["read","write","admin"]
 }
 ```
-
-### POST /auth/logout
+---
+### <span style="color:orange">POST</span> /auth/logout
 
 This API logs out a logged in user.
 
@@ -911,7 +1054,9 @@ This API logs out a logged in user.
 
 ## API Keys
 
-### GET /auth/api-keys
+---
+
+### <span style="color:green">GET</span> /auth/api-keys
 
 This API returns a list of all API keys.
 
@@ -930,15 +1075,15 @@ This API returns a list of all API keys.
     }
 ]
 ```
-
-### POST /auth/api-keys
+---
+### <span style="color:orange">POST</span> /auth/api-keys
 
 This API creates a new API key.
 
 #### Parameters:
 
-* name (String): Name of the new API key.
-* roles (List of String): Roles that belong to the API key.
+* **name** (String): Name of the new API key.
+* **roles** (List of String): Roles that belong to the API key.
 
 #### Examples:
 ```
@@ -958,7 +1103,8 @@ This API creates a new API key.
 }
 ```
 
-### DELETE /auth/api-keys/{id}
+---
+### <span style="color:red">DELETE</span> /auth/api-keys/{id}
 
 This API deletes an API key.
 
@@ -969,16 +1115,16 @@ This API deletes an API key.
 // 200 - OK
 {}
 ```
-
-### PATCH /auth/api-keys/{id}
+---
+### <span style="color:yellow">PATCH</span> /auth/api-keys/{id}
 
 This API updates an API key.
 
 #### Parameters:
 
-* enabled (Boolean): Enable / disable API key.
-* name (String): Name of the API key.
-* roles (List of String): Roles of the API key.
+* **enabled** (Boolean): Enable / disable API key.
+* **name** (String): Name of the API key.
+* **roles** (List of String): Roles of the API key.
 
 #### Examples:
 ```
@@ -999,7 +1145,9 @@ This API updates an API key.
 
 ## Antennas
 
-### GET /antennas
+---
+
+### <span style="color:green">GET</span> /antennas
 
 This API returns a list of all antennas.
 
@@ -1027,8 +1175,8 @@ This API returns a list of all antennas.
     }
 ]
 ```
-
-### GET /antennas/{id}
+---
+### <span style="color:green">GET</span> /antennas/{id}
 
 This API returns an antenna by ID.
 
@@ -1046,8 +1194,8 @@ This API returns an antenna by ID.
     "name": "Antenna 1"
 }
 ```
-
-### GET /antennas/favourites
+---
+### <span style="color:green">GET</span> /antennas/favourites
 
 This API returns a list of all favourited antennas.
 
@@ -1069,8 +1217,8 @@ This API returns a list of all favourited antennas.
     }
 ]
 ```
-
-### POST /antennas/{id}/favourite
+---
+### <span style="color:orange">POST</span> /antennas/{id}/favourite
 
 This API adds the given antenna into the list of favourite antennas.
 
@@ -1081,8 +1229,8 @@ This API adds the given antenna into the list of favourite antennas.
 // 200 - OK
 {}
 ```
-
-### DELETE /antennas/{id}/favourite
+---
+### <span style="color:red">DELETE</span> /antennas/{id}/favourite
 
 This API removes the given antenna from the list of favourite antennas.
 
@@ -1093,8 +1241,8 @@ This API removes the given antenna from the list of favourite antennas.
 // 200 - OK
 {}
 ```
-
-### GET /antennas/{id}/pattern
+---
+### <span style="color:green">GET</span> /antennas/{id}/pattern
 
 This API returns an antenna pattern by ID.
 
@@ -1116,7 +1264,9 @@ This API returns an antenna pattern by ID.
 
 ## LOS Models
 
-### GET /los-models
+---
+
+### <span style="color:green">GET</span> /los-models
 
 This API returns a list of all LoS Models.
 
@@ -1166,8 +1316,8 @@ This API returns a list of all LoS Models.
     }
 ]
 ```
-
-### GET /los-models/{id}
+---
+### <span style="color:green">GET</span> /los-models/{id}
 
 This API returns a LoS Model by ID.
 
@@ -1201,8 +1351,8 @@ This API returns a LoS Model by ID.
     "use_atmosphere_data": true,
 }
 ```
-
-### POST /los-models
+---
+### <span style="color:orange">POST</span> /los-models
 
 This API creates a new LoS Model.
 
@@ -1249,8 +1399,8 @@ This API creates a new LoS Model.
     "use_atmosphere_data": true,
 }
 ```
-
-### PATCH /los-models/{id}
+---
+### <span style="color:yellow">PATCH</span> /los-models/{id}
 
 This API updates the given LoS Model with new values.
 
@@ -1288,8 +1438,8 @@ This API updates the given LoS Model with new values.
     "use_atmosphere_data": true,
 }
 ```
-
-### DELETE /los-models/{id}
+---
+### <span style="color:red">DELETE</span> /los-models/{id}
 
 This API deletes the given los model.
 
@@ -1303,7 +1453,9 @@ This API deletes the given los model.
 
 ## Elevation Models
 
-### GET /elevation-models
+---
+
+### <span style="color:green">GET</span> /elevation-models
 
 This API returns a list of all Elevation Models.
 
@@ -1325,8 +1477,8 @@ This API returns a list of all Elevation Models.
     }
 ]
 ```
-
-### GET /elevation-models/{id}/coverage-area
+---
+### <span style="color:green">GET</span> /elevation-models/{id}/coverage-area
 
 This API returns the boundary polygon for available data, for a given elevation model. This data is returned as GeoJSON MultiPolygon geometry object.
 
@@ -1353,7 +1505,9 @@ This API returns the boundary polygon for available data, for a given elevation 
 
 ## Networks
 
-### GET /networks
+---
+
+### <span style="color:green">GET</span> /networks
 
 This API returns a list of all networks.
 
@@ -1375,15 +1529,15 @@ This API returns a list of all networks.
     }
 ]
 ```
-
-### POST /networks
+---
+### <span style="color:orange">POST</span> /networks
 
 This API creates a new network.
 
 #### Parameters:
 
-* name (String): Name of the network.
-* colour (String): Colour of the network in hexadecimal format.
+* **name** (String): Name of the network.
+* **colour** (String): Colour of the network in hexadecimal format.
 
 #### Examples:
 ```
@@ -1400,15 +1554,15 @@ This API creates a new network.
     "id": 2
 }
 ```
-
-### PATCH /networks/{id}
+---
+### <span style="color:yellow">PATCH</span> /networks/{id}
 
 This API updates a network.
 
 #### Parameters:
 
-* name (String): Name of the network.
-* colour (String): Colour of the network in hexadecimal format.
+* **name** (String): Name of the network.
+* **colour** (String): Colour of the network in hexadecimal format.
 
 #### Examples:
 ```
@@ -1425,8 +1579,8 @@ This API updates a network.
     "id": 2
 }
 ```
-
-### DELETE /networks/{id}
+---
+### <span style="color:red">DELETE</span> /networks/{id}
 
 This API deletes a network.
 
@@ -1437,28 +1591,28 @@ This API deletes a network.
 // 200 - OK
 []
 ```
-
-### POST /networks/import-networks
+---
+### <span style="color:orange">POST</span> /networks/import-networks
 
 Imports a CSV file containing a network of sites and radios and creates network(s).
 
 #### Parameters:
 
-* colour (String): Colour of the network in hexadecimal format.
-* site_name_field (String): Name of the site
-* network_field (String): Network field name in CSV file
-* notes_field (String): Notes field name in CSV file
-* site_height_field (String): Site height field name in CSV file
-* lat_field (String): Latitude field name in CSV file
-* lng_field (String): Longitude field name in CSV file
-* aps_name_field (String): ‘Access point name’ field name in CSV file
-* aps_site_field (String): ‘Access point site’ field name in CSV file
-* aps_height_field (String): ‘Access point height’ field name in CSV file
-* frequency_field (String): Frequency field name in CSV file
-* eirp_field (String): EIRP field name in CSV file
-* antenna_id_field (String): Antenna id field name in CSV file
-* tilt_field (String): Tilt field name in CSV file
-* bearing_field (String): Bearing field name in CSV file
+* **colour** (String): Colour of the network in hexadecimal format.
+* **site_name_field** (String): Name of the site
+* **network_field** (String): Network field name in CSV file
+* **notes_field** (String): Notes field name in CSV file
+* **site_height_field** (String): Site height field name in CSV file
+* **lat_field** (String): Latitude field name in CSV file
+* **lng_field** (String): Longitude field name in CSV file
+* **aps_name_field** (String): ‘Access point name’ field name in CSV file
+* **aps_site_field** (String): ‘Access point site’ field name in CSV file
+* **aps_height_field** (String): ‘Access point height’ field name in CSV file
+* **frequency_field** (String): Frequency field name in CSV file
+* **eirp_field** (String): EIRP field name in CSV file
+* **antenna_id_field** (String): Antenna id field name in CSV file
+* **tilt_field** (String): Tilt field name in CSV file
+* **bearing_field** (String): Bearing field name in CSV file
 
 #### Examples:
 ```
@@ -1478,23 +1632,23 @@ Content-Type: text/csv;
     }
 ]
 ```
-
-### POST /networks/import-isotropic
+---
+### <span style="color:orange">POST</span> /networks/import-isotropic
 
 Imports a CSV file containing one network of sites. The import_isotropic endpoint creates a network with user given sites and auto populates radio’s given the frequency and the EIRP. The antenna to be given to all sites can be selected, otherwise it will automatically be populated with isotropic antennas.
 
 #### Parameters:
 
-* name (String): Name of the network.
-* colour (String): Colour of the network in hexadecimal format.
-* lat_field (String): Latitude field name in CSV file
-* lng_field (String): Longitude field name in CSV file
-* site_name_field (String): Site name field name in CSV file
-* height_field (String): ‘access point height’ field name in CSV file
-* notes_field (String): Notes field name in CSV file
-* frequency_field (String): Frequency field name in CSV file
-* eirp_field (String): EIRP field name in CSV file
-* antenna_id (Number): ID of antenna to be given to all new sites
+* **name** (String): Name of the network.
+* **colour** (String): Colour of the network in hexadecimal format.
+* **lat_field** (String): Latitude field name in CSV file
+* **lng_field** (String): Longitude field name in CSV file
+* **site_name_field** (String): Site name field name in CSV file
+* **height_field** (String): ‘access point height’ field name in CSV file
+* **notes_field** (String): Notes field name in CSV file
+* **frequency_field** (String): Frequency field name in CSV file
+* **eirp_field** (String): EIRP field name in CSV file
+* **antenna_id** (Number): ID of antenna to be given to all new sites
 
 #### Examples:
 ```
@@ -1512,7 +1666,9 @@ Content-Type: text/csv;
 
 ## Network Views
 
-### GET /networks/views
+---
+
+### <span style="color:green">GET</span> /networks/views
 
 This API returns a list of all network views.
 
@@ -1535,15 +1691,15 @@ This API returns a list of all network views.
     }
 ]
 ```
-
-### POST /networks/views
+---
+### <span style="color:orange">POST</span> /networks/views
 
 This API creates a new network view.
 
 #### Parameters:
 
-* name (String): name of the network view.
-* networks (List of Numbers): IDs of the networks that belong to the network view.
+* **name** (String): name of the network view.
+* **networks** (List of Numbers): IDs of the networks that belong to the network view.
 
 #### Examples:
 ```
@@ -1560,15 +1716,15 @@ This API creates a new network view.
     "id": 2
 }
 ```
-
-### PATCH /networks/views/{id}
+---
+### <span style="color:yellow">PATCH</span> /networks/views/{id}
 
 This API updates a network view.
 
 #### Parameters:
 
-* name (String): name of the network view.
-* networks (List of Numbers): IDs of the networks that belong to the network view.
+* **name** (String): name of the network view.
+* **networks** (List of Numbers): IDs of the networks that belong to the network view.
 
 #### Examples:
 ```
@@ -1585,8 +1741,8 @@ This API updates a network view.
     "id": 2
 }
 ```
-
-### DELETE /networks/views/{id}
+---
+### <span style="color:red">DELETE</span> /networks/views/{id}
 
 This API deletes a network view.
 
@@ -1597,8 +1753,8 @@ This API deletes a network view.
 // 200 - OK
 []
 ```
-
-### GET /networks/views/{id}/coverage-report.csv
+---
+### <span style="color:green">GET</span> /networks/views/{id}/coverage-report.csv
 
 This API returns a CSV of a network views coverage report.
 
@@ -1612,8 +1768,8 @@ Test Site,1,Test Radio,1,-65.1,pass,1,5000,12345,,,54.116,1.474
 Test Site,1,Test Radio,1,-85.1,failure,1,6000,12346,,,54.216,1.574
 Test Site,1,Test Radio,1,-65.1,pass,1,4000,12347,,,54.316,1.374
 ```
-
-### GET /networks/views/{id}/sites.csv
+---
+### <span style="color:green">GET</span> /networks/views/{id}/sites.csv
 
 This API returns a CSV of a all sites in a given network view.
 
@@ -1626,18 +1782,21 @@ id,name,network,latitude,longitude,height,notes
 4,New Site,test network,54.20,-0.37,10.0,
 1,New Site,test network,54.22,-0.39,11.0,
 ```
-
-### GET /networks/views/{id}/radios.csv
+---
+### <span style="color:green">GET</span> /networks/views/{id}/radios.csv
 
 This API returns a CSV of a network views radios.
 
-### GET /networks/views/{id}/backhauls.csv
+---
+### <span style="color:green">GET</span> /networks/views/{id}/backhauls.csv
 
 This API returns a CSV of a backhauls.
 
 ## Sites
 
-### GET /networks/{id}/sites
+---
+
+### <span style="color:green">GET</span> /networks/{id}/sites
 
 This API returns a list of sites within a network.
 
@@ -1673,19 +1832,19 @@ This API returns a list of sites within a network.
     },
 ]
 ```
-
-### POST /networks/{id}/sites
+---
+### <span style="color:orange">POST</span> /networks/{id}/sites
 
 This API creates a new site.
 
 #### Parameters:
 
-* name (String): Name of the site.
-* radios (List of Objects): Radios that belong to the site.
-* height (Number): Height of the site.
-* location (Object): Location of site.
-* lat (Number): Latitude.
-* lng (Number): Longitude.
+* **name** (String): Name of the site.
+* **radios** (List of Objects): Radios that belong to the site.
+* **height** (Number): Height of the site.
+* **location** (Object): Location of site.
+* **lat** (Number): Latitude.
+* **lng** (Number): Longitude.
 
 #### Examples:
 ```
@@ -1743,8 +1902,8 @@ This API creates a new site.
     "icon": "broadcast_tower"
 }
 ```
-
-### GET /sites/{id}
+---
+### <span style="color:green">GET</span> /sites/{id}
 
 This API returns a site.
 
@@ -1766,19 +1925,19 @@ This API returns a site.
     "icon": "broadcast_tower"
 }
 ```
-
-### PATCH /sites/{id}
+---
+### <span style="color:yellow">PATCH</span> /sites/{id}
 
 This API updates a site.
 
 #### Parameters:
 
-* name (String): Name of the site.
-* radios (List of Objects): Radios that belong to the site.
-* height (Number): Height of the site.
-* location (Object): Location of site.
-* lat (Number): Latitude.
-* lng (Number): Longitude.
+* **name** (String): Name of the site.
+* **radios** (List of Objects): Radios that belong to the site.
+* **height** (Number): Height of the site.
+* **location** (Object): Location of site.
+* **lat** (Number): Latitude.
+* **lng** (Number): Longitude.
 
 #### Examples:
 ```
@@ -1802,8 +1961,8 @@ This API updates a site.
     "icon": "broadcast_tower"
 }
 ```
-
-### DELETE /sites/{id}
+---
+### <span style="color:red">DELETE</span> /sites/{id}
 
 This API deletes a site.
 
@@ -1814,16 +1973,16 @@ This API deletes a site.
 // 200 - OK
 []
 ```
-
-### POST /sites/{id}/clone
+---
+### <span style="color:orange">POST</span> /sites/{id}/clone
 
 This API creates a clone of a given site.
 
 #### Parameters:
 
-* location (Object): Location of new site.
-* lat (Number): Latitude.
-* lng (Number): Longitude.
+* **location** (Object): Location of new site.
+* **lat** (Number): Latitude.
+* **lng** (Number): Longitude.
 
 #### Examples:
 ```
@@ -1862,17 +2021,19 @@ location: {lat: 53.96077655335171, lng: -1.1054920341530874}
 
 ## Site Links
 
-### GET /networks/views/{id}/site-links
+---
+
+### <span style="color:green">GET</span> /networks/views/{id}/site-links
 
 This API returns a list of sites that have line-of-sight to a given site.
 
 #### Parameters:
 
-* height (Number): Height of the site.
-* latitude (Number): Latitude of site.
-* longitude (Number): Longitude of site.
-* los_model_id (Integer): ID of LoS model to use.
-* network_view_id (Number): ID of network view.
+* **height** (Number): Height of the site.
+* **latitude** (Number): Latitude of site.
+* **longitude** (Number): Longitude of site.
+* **los_model_id** (Integer): ID of LoS model to use.
+* **network_view_id** (Number): ID of network view.
 
 #### Examples:
 ```
@@ -1921,7 +2082,9 @@ This API returns a list of sites that have line-of-sight to a given site.
 
 ## Radios
 
-### GET /sites/{id}/radios
+---
+
+### <span style="color:green">GET</span> /sites/{id}/radios
 
 This API returns a list of a radios belonging to a site.
 
@@ -1957,21 +2120,21 @@ This API returns a list of a radios belonging to a site.
     }
 ]
 ```
-
-### POST /sites/{id}/radios
+---
+### <span style="color:orange">POST</span> /sites/{id}/radios
 
 This API creates a new radio within a site.
 
 #### Parameters:
 
-* antenna_id (Number): Antenna ID.
-* bearing (Number): Bearing of radio.
-* eirp (Number): EIRP of radio.
-* height (Number): Height of radio.
-* name (String): Name of radio.
-* tilt (Number): Tilt of radio.
-* auto_facing (Boolean): Flag to indicate if the radio should automatically face its peer.
-* is_access_point (Boolean): Flag to indicate if the radio is an access_point.
+* **antenna_id** (Number): Antenna ID.
+* **bearing** (Number): Bearing of radio.
+* **eirp** (Number): EIRP of radio.
+* **height** (Number): Height of radio.
+* **name** (String): Name of radio.
+* **tilt** (Number): Tilt of radio.
+* **auto_facing** (Boolean): Flag to indicate if the radio should automatically face its peer.
+* **is_access_point** (Boolean): Flag to indicate if the radio is an access_point.
 
 #### Examples:
 ```
@@ -1998,8 +2161,8 @@ This API creates a new radio within a site.
     "id": 3,
 }
 ```
-
-### GET /radios/{id}
+---
+### <span style="color:green">GET</span> /radios/{id}
 
 This API returns a radio by ID.
 
@@ -2019,19 +2182,19 @@ This API returns a radio by ID.
     "id": 3
 }
 ```
-
-### PATCH /radios/{id}
+---
+### <span style="color:yellow">PATCH</span> /radios/{id}
 
 This API updates a radio.
 
 #### Parameters:
 
-* antenna_id (Number): Radio antenna ID.
-* bearing (Number): Bearing of radio.
-* eirp (Number): EIRP of radio.
-* height (Number): Height of radio.
-* name (String): Name of radio.
-* tilt (Number): Tilt of radio.
+* **antenna_id** (Number): Radio antenna ID.
+* **bearing** (Number): Bearing of radio.
+* **eirp** (Number): EIRP of radio.
+* **height** (Number): Height of radio.
+* **name** (String): Name of radio.
+* **tilt** (Number): Tilt of radio.
 
 #### Examples:
 ```
@@ -2056,8 +2219,8 @@ This API updates a radio.
     "id": 3,
 }
 ```
-
-### DELETE /radios/{id}
+---
+### <span style="color:red">DELETE</span> /radios/{id}
 
 This API deletes a radio.
 
@@ -2071,7 +2234,9 @@ This API deletes a radio.
 
 ## Backhauls
 
-### GET /backhauls
+---
+
+### <span style="color:green">GET</span> /backhauls
 
 This API returns a list of backhauls
 
@@ -2103,8 +2268,8 @@ This API returns a list of backhauls
     }
 ]
 ```
-
-### GET /backhauls/{id}
+---
+### <span style="color:green">GET</span> /backhauls/{id}
 
 This API returns a backhaul object with the requested id
 
@@ -2124,8 +2289,8 @@ This API returns a backhaul object with the requested id
         "site_b_id": 3
     }
 ```
-
-### GET /sites/{id}/backhauls/
+---
+### <span style="color:green">GET</span> /sites/{id}/backhauls/
 
 This API returns a list of backhauls connected to the given site.
 
@@ -2158,8 +2323,8 @@ This API returns a list of backhauls connected to the given site.
     }
 ]
 ```
-
-### DELETE /backhauls/{id}
+---
+### <span style="color:red">DELETE</span> /backhauls/{id}
 
 This API deletes a backhaul object by id.
 
@@ -2170,25 +2335,25 @@ This API deletes a backhaul object by id.
 // 200 - OK
 []
 ```
-
-### POST /backhauls
+---
+### <span style="color:orange">POST</span> /backhauls
 
 This API creates a new backhaul.
 
 #### Parameters:
 
-* name (String): Radios name.
-* capacity (Number): Bandwidth in Mbps.
-* notes (Number): Notes field of the backhaul.
-* media_type (String): Media type of backhaul.
-* site_a_id (Number): Site A ID.
-* site_b_id (Number): Site B ID.
+* **name** (String): Radios name.
+* **capacity** (Number): Bandwidth in Mbps.
+* **notes** (Number): Notes field of the backhaul.
+* **media_type** (String): Media type of backhaul.
+* **site_a_id** (Number): Site A ID.
+* **site_b_id** (Number): Site B ID.
 
 #### Optional parameters:
 
-* distance (Number): Distance of link in meters, set to null for automatic.
-* radio_a_id (Number): Radio A ID (in case of “wireless” media type).
-* radio_b_id (Number): Radio B ID (in case of “wireless” media type).
+* **distance** (Number): Distance of link in meters, set to null for automatic.
+* **radio_a_id** (Number): Radio A ID (in case of “wireless” media type).
+* **radio_b_id** (Number): Radio B ID (in case of “wireless” media type).
 
 #### Examples:
 ```
@@ -2217,25 +2382,25 @@ This API creates a new backhaul.
     "radio_b_id": 5
 }
 ```
-
-### PATCH /backhauls/{id}
+---
+### <span style="color:yellow">PATCH</span> /backhauls/{id}
 
 This API updates a backhaul.
 
 #### Parameters:
 
-* name (String): Radios name.
-* capacity (Number): Bandwidth in Mbps.
-* notes (Number): Notes field of the backhaul.
-* media_type (String): Media type of backhaul.
-* site_a_id (Number): Site A ID.
-* site_b_id (Number): Site B ID.
+* **name** (String): Radios name.
+* **capacity** (Number): Bandwidth in Mbps.
+* **notes** (Number): Notes field of the backhaul.
+* **media_type** (String): Media type of backhaul.
+* **site_a_id** (Number): Site A ID.
+* **site_b_id** (Number): Site B ID.
 
 #### Optional parameters:
 
-* distance (Number): Distance of link in meters, set to null for automatic.
-* radio_a_id (Number): Radio A ID (in case of “wireless” media type).
-* radio_b_id (Number): Radio B ID (in case of “wireless” media type).
+* **distance** (Number): Distance of link in meters, set to null for automatic.
+* **radio_a_id** (Number): Radio A ID (in case of “wireless” media type).
+* **radio_b_id** (Number): Radio B ID (in case of “wireless” media type).
 
 #### Examples:
 ```
@@ -2265,7 +2430,9 @@ This API updates a backhaul.
 
 ## Map Data Sources
 
-### GET /map-data-sources
+---
+
+### <span style="color:green">GET</span> /map-data-sources
 
 This API returns a list of all map data sources.
 
@@ -2296,8 +2463,8 @@ This API returns a list of all map data sources.
     },
 ]
 ```
-
-### GET /map-data-sources/{id}
+---
+### <span style="color:green">GET</span> /map-data-sources/{id}
 
 This API returns a map data source object by ID.
 
@@ -2317,15 +2484,15 @@ This API returns a map data source object by ID.
     "ymax": 4.0}
 }
 ```
-
-### PATCH /map-data-sources/{id}
+---
+### <span style="color:yellow">PATCH</span> /map-data-sources/{id}
 
 This API updates a map data source.
 
 #### Parameters:
 
-* name (String): Map Data Source name.
-* description (String): Map Data Source description.
+* **name** (String): Map Data Source name.
+* **description** (String): Map Data Source description.
 
 #### Examples:
 ```
@@ -2346,8 +2513,8 @@ This API updates a map data source.
     "image_bounds": null
 }
 ```
-
-### GET /map-data-sources/{id}/raster-image
+---
+### <span style="color:green">GET</span> /map-data-sources/{id}/raster-image
 
 This API returns the PNG image data from a map data source of “raster_image” type.
 
@@ -2358,8 +2525,8 @@ This API returns the PNG image data from a map data source of “raster_image”
 // 200 - OK
 Binary PNG data
 ```
-
-### GET /map-data-sources/{id}/vector-geojson
+---
+### <span style="color:green">GET</span> /map-data-sources/{id}/vector-geojson
 
 This API returns the GeoJSON data from a map data source of “vector_geojson” type.
 
@@ -2370,8 +2537,8 @@ This API returns the GeoJSON data from a map data source of “vector_geojson”
 // 200 - OK
 GeoJSON Feature Object
 ```
-
-### POST /map-data-sources/vector-geojson/csv
+---
+### <span style="color:orange">POST</span> /map-data-sources/vector-geojson/csv
 
 This API imports a CSV to create a “vector_geojson” layer of points, from each row of the CSV.
 
@@ -2388,8 +2555,8 @@ This API imports a CSV to create a “vector_geojson” layer of points, from ea
     "layer_styles": "mapbox layerstyle object"
 }
 ```
-
-### DELETE /map-data-sources/{id}
+---
+### <span style="color:red">DELETE</span> /map-data-sources/{id}
 
 This API deletes a map data source from the account.
 
@@ -2403,7 +2570,9 @@ This API deletes a map data source from the account.
 
 ## Deep Coverage
 
-### GET /deep-coverage-points/points
+---
+
+### <span style="color:green">GET</span> /deep-coverage-points/points
 
 This API checks multiple points at each property and returns a list of LoS results at different parts of property.
 
@@ -2448,28 +2617,30 @@ This API checks multiple points at each property and returns a list of LoS resul
 
 ## Path Profile
 
-### GET /path-profile
+---
+
+### <span style="color:green">GET</span> /path-profile
 
 This API returns a path profile.
 
 #### Parameters:
 
-* los_model_id (Integer): ID of LoS model to use.
-* latitude_a (Integer): Latitude of access point.
-* longitude_a (Integer): Longitude of access point.
-* height_a (Integer): Height of access point.
-* azimuth_a (Integer): Azimuth of access point.
-* tilt_a (Integer): Tilt of access point.
-* eirp_a (Integer): EIRP of access point.
-* antenna_id_a (Integer): Antenna ID
-* latitude_b (Integer): Latitude of property.
-* longitude_b (Integer): Longitude of property.
-* height_b (Integer): Height of radio at property.
-* gain_b (Integer): Gain of the property antenna in dBi.
-* frequency (Integer): Frequency of the radio link in MHz.
-* autofacing_a (Boolean): Whether the access point radio is assumed to be facing directly towards its peer.
-* autofacing_b (Boolean): Whether the property radio is assumed to be facing directly towards its peer.
-* use_deep_coverage (Boolean): Whether LoS test will be performed on multiple points of a property.
+* **los_model_id** (Integer): ID of LoS model to use.
+* **latitude_a** (Integer): Latitude of access point.
+* **longitude_a** (Integer): Longitude of access point.
+* **height_a** (Integer): Height of access point.
+* **azimuth_a** (Integer): Azimuth of access point.
+* **tilt_a** (Integer): Tilt of access point.
+* **eirp_a** (Integer): EIRP of access point.
+* **antenna_id_a** (Integer): Antenna ID
+* **latitude_b** (Integer): Latitude of property.
+* **longitude_b** (Integer): Longitude of property.
+* **height_b** (Integer): Height of radio at property.
+* **gain_b** (Integer): Gain of the property antenna in dBi.
+* **frequency** (Integer): Frequency of the radio link in MHz.
+* **autofacing_a** (Boolean): Whether the access point radio is assumed to be facing directly towards its peer.
+* **autofacing_b** (Boolean): Whether the property radio is assumed to be facing directly towards its peer.
+* **use_deep_coverage** (Boolean): Whether LoS test will be performed on multiple points of a property.
 
 #### Examples:
 ```
@@ -2516,7 +2687,9 @@ This API returns a path profile.
 
 ## Viewsheds
 
-### GET /viewsheds/single/wms
+---
+
+### <span style="color:green">GET</span> /viewsheds/single/wms
 
 This API returns a viewshed image in requested image format. This WMS (Web Map Service) endpoint only returns image in requested format. It does not support any other requests. Only WMS version 1.3 is supported.
 
@@ -2524,27 +2697,27 @@ Please refer to: WMS specifications.
 
 #### Parameters:
 
-* bbox (Integer): Bounding box corners (lower left, upper right). Values must be in units of the specified SRS.
-* format (String): Requested image format. Currently only “image/png” is supported.
-* service (String): Specify “WMS” here.
-* version (Integer): Specify “1.3.0” here.
-* request (String): Request name. Currently on “GetMap” is supported.
-* srs (String): Target projection. “3857” is recommended here for web map usage.
-* width (Integer): Width in pixels of resulting map image.
-* height (Integer): Height in pixels of resulting map image.
-* layers (Integer): Specify “viewshed” here.
-* styles (Integer): Specify “viewshed” here.
-* bearing (Integer): Bearing of access point.
-* tilt (Integer): Tilt of access point.
-* los_model_id (Integer): ID of LoS model to use.
-* ap_frequency (Integer): Frequency of access point in MHz.
-* ap_eirp_a (Integer): EIRP of access point.
-* ap_height_a (Integer): Height of access point.
-* ap_latitude_a (Integer): Latitude of access point.
-* ap_longitude_a (Integer): Longitude of access point.
-* ap_antenna_id_a (Integer): Antenna ID of access point
-* rsl_stop_colours[] (List of Integer): List of colours representing RSL for each gradient stop, in hexadecimal RGBA format.
-* rsl_stop_values[] (List of Integer): List of RSL values for each gradient stop, in dBm.
+* **bbox** (Integer): Bounding box corners (lower left, upper right). Values must be in units of the specified SRS.
+* **format** (String): Requested image format. Currently only “image/png” is supported.
+* **service** (String): Specify “WMS” here.
+* **version** (Integer): Specify “1.3.0” here.
+* **request** (String): Request name. Currently on “GetMap” is supported.
+* **srs** (String): Target projection. “3857” is recommended here for web map usage.
+* **width** (Integer): Width in pixels of resulting map image.
+* **height** (Integer): Height in pixels of resulting map image.
+* **layers** (Integer): Specify “viewshed” here.
+* **styles** (Integer): Specify “viewshed” here.
+* **bearing** (Integer): Bearing of access point.
+* **tilt** (Integer): Tilt of access point.
+* **los_model_id** (Integer): ID of LoS model to use.
+* **ap_frequency** (Integer): Frequency of access point in MHz.
+* **ap_eirp_a** (Integer): EIRP of access point.
+* **ap_height_a** (Integer): Height of access point.
+* **ap_latitude_a** (Integer): Latitude of access point.
+* **ap_longitude_a** (Integer): Longitude of access point.
+* **ap_antenna_id_a** (Integer): Antenna ID of access point
+* **rsl_stop_colours[]** (List of Integer): List of colours representing RSL for each gradient stop, in hexadecimal RGBA format.
+* **rsl_stop_values[]** (List of Integer): List of RSL values for each gradient stop, in dBm.
 
 #### Examples:
 ```
@@ -2553,15 +2726,17 @@ Please refer to: WMS specifications.
 
 ## Elevation data
 
-### GET /elevation-data
+---
+
+### <span style="color:green">GET</span> /elevation-data
 
 This API has the parameters latitude and longitude, and is used to fetch elevation data. Its returns ground height above sea level and surface height above ground level in meters.
 
 #### Parameters:
 
-* latitude (Number): Latitude of the location.
-* longitude (Number): Longitude of the location.
-* los_model_id (Number): ID of the LoS model.
+* **latitude** (Number): Latitude of the location.
+* **longitude** (Number): Longitude of the location.
+* **los_model_id** (Number): ID of the LoS model.
 
 #### Examples:
 ```
@@ -2574,33 +2749,35 @@ This API has the parameters latitude and longitude, and is used to fetch elevati
 
 ## Reports
 
-### POST /reports/engineer
+---
+
+### <span style="color:orange">POST</span> /reports/engineer
 
 This API returns a PDF report for a single property. The report contains information about the property and access point, as well as a deep coverage check.
 
 #### Parameters:
 
-* los_model_id (Integer): ID of LoS model to use.
-* latitude_a (Integer): Latitude of property.
-* longitude_a (Integer): Longitude of property.
-* height_a (Integer): Height of radio at property.
-* azimuth_a (Integer): Azimuth of radio at property.
-* tilt_a (Integer): Tilt of radio at property.
-* eirp_a (Integer): EIRP of radio at property.
-* antenna_id_a (Integer): Antenna ID.
-* latitude_b (Integer): Latitude of access point.
-* longitude_b (Integer): Longitude of access point.
-* height_b (Integer): Height of access point.
-* azimuth_b (Integer): Azimuth of access point.
-* tilt_b (Integer): Tilt of access point.
-* gain_b (Integer): Gain of the access point antenna in dBi.
-* antenna_id_b (Integer): Antenna ID.
-* frequency (Integer): Frequency of the radio link in MHz.
-* autofacing_a (Boolean): Whether the property radio is assumed to be facing directly towards its peer.
-* autofacing_b (Boolean): Whether the access point radio is assumed to be facing directly towards its peer.
-* property_id (Integer): Property ID.
-* site_id (Integer): Site ID.
-* radio_id (Integer): Radio ID.
+* **los_model_id** (Integer): ID of LoS model to use.
+* **latitude_a** (Integer): Latitude of property.
+* **longitude_a** (Integer): Longitude of property.
+* **height_a** (Integer): Height of radio at property.
+* **azimuth_a** (Integer): Azimuth of radio at property.
+* **tilt_a** (Integer): Tilt of radio at property.
+* **eirp_a** (Integer): EIRP of radio at property.
+* **antenna_id_a** (Integer): Antenna ID.
+* **latitude_b** (Integer): Latitude of access point.
+* **longitude_b** (Integer): Longitude of access point.
+* **height_b** (Integer): Height of access point.
+* **azimuth_b** (Integer): Azimuth of access point.
+* **tilt_b** (Integer): Tilt of access point.
+* **gain_b** (Integer): Gain of the access point antenna in dBi.
+* **antenna**_id_b (Integer): Antenna ID.
+* **frequency** (Integer): Frequency of the radio link in MHz.
+* **autofacing_a** (Boolean): Whether the property radio is assumed to be facing directly towards its peer.
+* **autofacing_b** (Boolean): Whether the access point radio is assumed to be facing directly towards its peer.
+* **property_id** (Integer): Property ID.
+* **site_id** (Integer): Site ID.
+* **radio_id** (Integer): Radio ID.
 
 #### Examples:
 ```
@@ -2635,14 +2812,16 @@ This API returns a PDF report for a single property. The report contains informa
 
 ## Binary PDF File
 
-### POST /reports/backhaul
+---
+
+### <span style="color:orange">POST</span> /reports/backhaul
 
 This API returns a PDF report for a single backhaul. The report contains information both sites and the backhaul, as well as a path profile.
 
 #### Parameters:
 
-* backhaul_id (Integer): ID of backhaul to use
-* los_model_id (Integer): ID of LoS model to use
+* **backhaul_id** (Integer): ID of backhaul to use
+* **los_model_id** (Integer): ID of LoS model to use
 
 #### Examples:
 ```
