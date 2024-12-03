@@ -10,7 +10,10 @@ use Ocolin\Wisdm\Wisdm;
 class AvailabilityTest extends TestBase
 {
 
-    public function testGet()
+/* GET AVAILABILITY
+----------------------------------------------------------------------------- */
+
+    public function testGet() : void
     {
         $wisdm = new Wisdm();
         $result = $wisdm->call( path: '/availability' );
@@ -42,7 +45,11 @@ class AvailabilityTest extends TestBase
     }
     */
 
-    public function testPostcode()
+
+/* GET POST CODE
+----------------------------------------------------------------------------- */
+
+    public function testPostcode() : void
     {
         $wisdm = new Wisdm();
         $result = $wisdm->call(
@@ -59,7 +66,11 @@ class AvailabilityTest extends TestBase
     }
 
 
-    public function testAvailabilityCheck()
+
+/* GET AVAILABILITY CHECK
+----------------------------------------------------------------------------- */
+
+    public function testAvailabilityCheck() : void
     {
         $wisdm = new Wisdm();
         $result = $wisdm->call(
@@ -76,7 +87,10 @@ class AvailabilityTest extends TestBase
 
 
 
-    public function testCheck()
+/* CHECK AVAILABILITY
+----------------------------------------------------------------------------- */
+
+    public function testCheck() : void
     {
         $wisdm = new Wisdm();
         $result = $wisdm->call(
@@ -89,7 +103,6 @@ class AvailabilityTest extends TestBase
                 'network_view_id' => 1303
             ]
         );
-        echo $result->status_message . "\n";
         $this->globalTest( result: $result );
         $this->assertEquals( expected: 200, actual: $result->status );
         $this->assertEquals( expected: 'OK', actual: $result->status_message );

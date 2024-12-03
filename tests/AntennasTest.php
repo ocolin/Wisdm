@@ -4,11 +4,14 @@ declare( strict_types =  1 );
 
 namespace Tests;
 
-use PHPUnit\Framework\Attributes\Depends;
 use Ocolin\Wisdm\Wisdm;
 
 class AntennasTest extends TestBase
 {
+
+/* GET ALL ANTENNA
+----------------------------------------------------------------------------- */
+
     public function testGetAll() : void
     {
         $wisdm = new Wisdm();
@@ -19,6 +22,10 @@ class AntennasTest extends TestBase
         $this->assertIsArray( actual: $result->body );
     }
 
+
+
+/* GET AN ANTENNA
+----------------------------------------------------------------------------- */
 
     public function testGet() : void
     {
@@ -31,6 +38,9 @@ class AntennasTest extends TestBase
     }
 
 
+
+/* GET FAVORITES
+----------------------------------------------------------------------------- */
 
     public function testFavoritesAll() : void
     {

@@ -9,6 +9,13 @@ use Ocolin\Wisdm\Wisdm;
 
 class LosModelsTest extends TestBase
 {
+
+/* CREATE LOS MODEL
+----------------------------------------------------------------------------- */
+
+    /**
+     * @return int ID of LOS model.
+     */
     public function testCreate() : int
     {
         $result = self::createLosModel();
@@ -21,6 +28,13 @@ class LosModelsTest extends TestBase
     }
 
 
+/* UPDATE LOS MODEL
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int $id ID of LOS model.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testUpdate( int $id ) : void
     {
@@ -38,6 +52,14 @@ class LosModelsTest extends TestBase
     }
 
 
+
+/* GET LOS MODEL
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int $id ID of LOS model.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testGet( int $id ) : void
     {
@@ -53,6 +75,10 @@ class LosModelsTest extends TestBase
     }
 
 
+
+/* GET ALL LOS MODELS
+----------------------------------------------------------------------------- */
+
     public function testGetAll() : void
     {
         $wisdm = new Wisdm();
@@ -63,6 +89,15 @@ class LosModelsTest extends TestBase
         $this->assertIsArray( actual: $result->body );
     }
 
+
+
+/* DELETE LOS MODELS
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int $id ID of LOS model.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testDelete( int $id ) : void
     {

@@ -10,6 +10,12 @@ use Ocolin\Wisdm\Wisdm;
 class TestBase extends TestCase
 {
 
+/* CREATE A NETWORK
+----------------------------------------------------------------------------- */
+
+    /**
+     * @return object Response object.
+     */
     public static function createNetwork() : object
     {
         $widsm = new Wisdm();
@@ -26,6 +32,13 @@ class TestBase extends TestCase
 
 
 
+/* DELETE A NETWORK
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $id ID of network.
+     * @return object Response object.
+     */
     public static function deleteNetwork( int|string $id ) : object
     {
         $widsm = new Wisdm();
@@ -39,6 +52,13 @@ class TestBase extends TestCase
 
 
 
+/* CREATE A NETWORK VIEW
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $network_id ID of network view.
+     * @return object Response object.
+     */
     public static function createNetworksView( int|string $network_id ) : object
     {
         $widsm = new Wisdm();
@@ -54,6 +74,13 @@ class TestBase extends TestCase
 
 
 
+/* DELETE A NETWORK VIEW
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $id Network view ID.
+     * @return object Response object.
+     */
     public static function deleteNetworksViews( int|string $id ) : object
     {
         $widsm = new Wisdm();
@@ -65,6 +92,14 @@ class TestBase extends TestCase
         );
     }
 
+
+
+/* CREATE A LOS MODEL
+----------------------------------------------------------------------------- */
+
+    /**
+     * @return object Response object.
+     */
     public static function createLosModel() : object
     {
         $widsm = new Wisdm();
@@ -86,6 +121,15 @@ class TestBase extends TestCase
         );
     }
 
+
+
+/* DELETE A LOS MODEL
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $id ID of LOS model.
+     * @return object Response object.
+     */
     public static function deleteLosModels( int|string $id ) : object
     {
         $widsm = new Wisdm();
@@ -96,6 +140,15 @@ class TestBase extends TestCase
         );
     }
 
+
+
+/* GLOBAL SHARED TEST
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param mixed $result Test results.
+     * @return void
+     */
     public function globalTest( mixed $result ) : void
     {
         $this->assertIsObject( $result );

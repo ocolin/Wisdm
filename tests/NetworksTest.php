@@ -9,6 +9,13 @@ use Ocolin\Wisdm\Wisdm;
 
 class NetworksTest extends TestBase
 {
+
+/* CREATE A NETWORK
+----------------------------------------------------------------------------- */
+
+    /**
+     * @return string|int ID of network.
+     */
     public function testCreate() : string|int
     {
         $result = self::createNetwork();
@@ -21,6 +28,15 @@ class NetworksTest extends TestBase
         return $result->body->id;
     }
 
+
+
+/* UPDATE A NETWORK
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $id ID of network.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testUpdate( int|string $id ) : void
     {
@@ -40,6 +56,10 @@ class NetworksTest extends TestBase
     }
 
 
+
+/* GET NETWORK
+----------------------------------------------------------------------------- */
+
     public function testGet() : void
     {
         $wisdm = new Wisdm();
@@ -53,6 +73,15 @@ class NetworksTest extends TestBase
         $this->assertIsArray( actual: $result->body );
     }
 
+
+
+/* DELETE A NETWORK
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $id ID of network.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testDelete( int|string $id ) : void
     {

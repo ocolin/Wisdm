@@ -11,6 +11,13 @@ class NetworksViewsTest extends TestBase
 {
     public static int|string $network_id;
 
+
+/* CREATE NETWORK VIEW
+----------------------------------------------------------------------------- */
+
+    /**
+     * @return int ID of network view.
+     */
     public function testCreate() : int
     {
         $result = self::createNetworksView( network_id: self::$network_id );
@@ -22,6 +29,15 @@ class NetworksViewsTest extends TestBase
         return $result->body->id;
     }
 
+
+
+/* UPDATE NETWORK VIEW
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int|string $id ID of network view.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testUpdate( int|string $id ) : void
     {
@@ -40,6 +56,11 @@ class NetworksViewsTest extends TestBase
         $this->assertEquals( expected: 'PHPUnit_Update', actual: $result->body->name );
     }
 
+
+
+/* GET NETWORK VIEW
+----------------------------------------------------------------------------- */
+
     public function testGet() : void
     {
         $wisdm = new Wisdm();
@@ -52,6 +73,15 @@ class NetworksViewsTest extends TestBase
         $this->assertIsArray( actual: $result->body );
     }
 
+
+
+/* DELETE NETWORK VIEW
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param int $id ID of network view.
+     * @return void
+     */
     #[Depends('testCreate')]
     public function testDelete( int $id ) : void
     {
@@ -62,10 +92,19 @@ class NetworksViewsTest extends TestBase
         $this->assertIsObject( actual: $result->body );
     }
 
+
+
+/* SETUP BEFORE CLASS
+----------------------------------------------------------------------------- */
+
     public static function setUpBeforeClass(): void
     {
         self::$network_id = self::createNetwork()->body->id;
     }
+
+
+/* TEAR DOWN AFTER CLASS
+----------------------------------------------------------------------------- */
 
     public static function tearDownAfterClass(): void
     {
