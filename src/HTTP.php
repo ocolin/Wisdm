@@ -7,23 +7,44 @@ namespace Ocolin\Wisdm;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Query;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 class HTTP
 {
 
+    /**
+     * @var Client Guzzle HTTP Client.
+     */
     public Client $client;
 
+    /**
+     * @var string API Base URI.
+     */
     public string $base_uri;
 
+    /**
+     * @var string API Auth Token.
+     */
     public string $token;
 
+    /**
+     * @var array<float|int|string> HTTP headers.
+     */
     public array $headers;
 
 
-/*
+/* CONSTRUCTOR
 ---------------------------------------------------------------------------- */
 
+    /**
+     * @param Client|null $client Guzzle HTTP client.
+     * @param string|null $base_uri API Base URI.
+     * @param string|null $token API Auth token.
+     * @param bool $verify Option to verify SSL Certificate.
+     * @param bool $errors Option to stop on HTTP errors.
+     */
     public function __construct(
         ?Client $client     = null,
         ?string $base_uri   = null,
@@ -32,7 +53,7 @@ class HTTP
            bool $errors     = false
     )
     {
-        $this->base_uri = $base_url ?? $_ENV['WISDM_BASE_URI'];
+        $this->base_uri = $base_uri ?? $_ENV['WISDM_BASE_URI'];
         $this->token    = $token    ?? $_ENV['WISDM_TOKEN'];
         $this->headers  = $this->default_Headers();
 
@@ -53,10 +74,11 @@ class HTTP
     /**
      * Retrieve an object or list of objects.
      *
-     * @param string $uri
-     * @param array<string, string|int|float> $params
-     * @param array|null $body
-     * @return object
+     * @param string $uri URI of API call
+     * @param array<string, string|int|float> $params GET params
+     * @param array<string, mixed>|object|string|null $body POST Body
+     * @param array<string, string|int|float> $headers Optional headers
+     * @return object API response object
      * @throws GuzzleException
      */
 
@@ -90,10 +112,11 @@ class HTTP
     /**
      * Create an object.
      *
-     * @param string $uri
-     * @param array<object>|object|null $body
-     * @param array<string, string|int|float> $params
-     * @return object
+     * @param string $uri API URI.
+     * @param array<string, string|int|float> $params HTTP GET parameters.
+     * @param array<object>|object|null $body HTTP body parameters.
+     * @param array<string, string|int|float> $headers Optional headers
+     * @return object API response object
      * @throws GuzzleException
      */
 
@@ -110,7 +133,7 @@ class HTTP
             uri: $this->base_uri . $uri,
             options: [
                 'headers' => $this->headers,
-                  'query' => Query::build( $params ) ?? [],
+                  'query' => Query::build( $params ) ?: [],
                    'body' => json_encode( value: $body )
             ]
         );
@@ -126,10 +149,11 @@ class HTTP
     /**
      * Update an object.
      *
-     * @param string $uri
-     * @param array<object>|object|null $body
-     * @param array<string, string> $params
-     * @return object
+     * @param string $uri API URI.
+     * @param array<string, string|int|float> $params HTTP GET parameters.
+     * @param array<object>|object|null $body HTTP body parameters.
+     * @param array<string, string|int|float> $headers Optional HTTP headers.
+     * @return object API response object.
      * @throws GuzzleException
      */
 
@@ -147,7 +171,7 @@ class HTTP
                 uri: $this->base_uri . $uri,
             options: [
                 'headers' => $this->headers,
-                'query' => Query::build( $params ) ?? [],
+                'query' => Query::build( $params ) ?: [],
                 'body' => json_encode( value: $body )
             ]
         );
@@ -163,10 +187,11 @@ class HTTP
     /**
      * Delete an existing object.
      *
-     * @param string $uri
-     * @param array $params
-     * @param array<object> $body
-     * @return object
+     * @param string $uri API URI.
+     * @param array<string, string|int|float> $params HTTP GET parameters.
+     * @param array<object> $body HTTP body parameters.
+     * @param array<string, string|int|float> $headers Optional HTTP headers.
+     * @return object API response object.
      * @throws GuzzleException
      */
 
@@ -189,17 +214,17 @@ class HTTP
 
 
 
-    /* FORMAT RESPONSE
-    ---------------------------------------------------------------------------- */
+/* FORMAT RESPONSE
+---------------------------------------------------------------------------- */
 
     /**
      * Format the Guzzle HTTP request response into an array
      *
-     * @param object $request
-     * @return object
+     * @param ResponseInterface $request Guzzle response object.
+     * @return object API response object.
      */
 
-    private static function returnResults( object $request ) : object
+    private static function returnResults( ResponseInterface $request ) : object
     {
         $response = new stdClass();
         $response->status = $request->getStatusCode();
@@ -237,25 +262,5 @@ class HTTP
             'Content-type' => 'application/json; charset=utf-8',
             'User-Agent' => 'API Client 1.0',
         ];
-    }
-
-
-
-/* FORMAT URL PARAMETERS
----------------------------------------------------------------------------- */
-
-    /**
-     * Format an array of parameters into a URL query
-     *
-     * @param array<string, string|int|float> $params
-     * @param string $uri
-     * @return string final URI with parameters encoded into it, or plain uri.
-     */
-
-    private static function formatParams( array $params, string $uri ) : string
-    {
-        if( empty( $params )) { return $uri; }
-
-        return $uri . '?' . http_build_query( $params );
     }
 }

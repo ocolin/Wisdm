@@ -4,24 +4,43 @@ declare( strict_types = 1 );
 
 namespace Ocolin\Wisdm;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Ocolin\Env\EasyEnv;
 
 class Wisdm
 {
+    /**
+     * @var HTTP Guzzle HTTP object.
+     */
     public HTTP $http;
 
+    /**
+     * @var string URI path
+     */
     public string $path;
 
+    /**
+     * @var array<string, string|int|float> HTTP URI parameters
+     */
     public array $params;
 
+    /**
+     * @var array<string, mixed>  HTTP request body
+     */
     public array $body;
 
 
-/*
+/* CONSTRUCTOR
 ---------------------------------------------------------------------------- */
 
+    /**
+     * @param Client|null $client Guzzle HTTP Client.
+     * @param string|null $base_uri API Base URI.
+     * @param string|null $token API Auth token.
+     * @throws Exception
+     */
     public function __construct(
           ?Client $client   = null,
           ?string $base_uri = null,
@@ -40,9 +59,17 @@ class Wisdm
 
 
 
-/*
+/* MAKE API CALL
 ---------------------------------------------------------------------------- */
 
+    /**
+     * @param string $path - URI path of API call.
+     * @param string $method - HTTP Method of API call.
+     * @param array<string, string|int|float> $params - URL Parameters of API call.
+     * @param array<string, mixed> $body - POST body content for API call.
+     * @param array<string, string|int|float> $headers - Optional HTTP Headers to send.
+     * @return object API response object.
+     */
     public function call(
         string $path,
         string $method  = 'GET',
@@ -66,15 +93,15 @@ class Wisdm
     }
 
 
-/*
+/* CREATE AN OBJECT - POST METHOD
 ---------------------------------------------------------------------------- */
 
     /**
-     * @param string $path
-     * @param array $params
-     * @param array $body
-     * @param array $headers
-     * @return object
+     * @param string $path - URI path of API call.
+     * @param array<string, string|int|float> $params - URI parameters of API call.
+     * @param array<string, mixed> $body - POST body parameters of API call.
+     * @param array<string, string|int|float> $headers - Optional HTTP headers
+     * @return object - API response object
      * @throws GuzzleException
      */
     public function create(
@@ -97,15 +124,15 @@ class Wisdm
     }
 
 
-/*
+/* GET AN OBJECT - GET METHOD
 ---------------------------------------------------------------------------- */
 
     /**
-     * @param string $path
-     * @param array $params
-     * @param array $body
-     * @param array $headers
-     * @return object
+     * @param string $path - URI path of API call.
+     * @param array<string, string|int|float> $params - URI parameters of API call.
+     * @param array<string, mixed> $body - POST body parameters of API call.
+     * @param array<string, string|int|float> $headers - Optional headers.
+     * @return object - API response object.
      * @throws GuzzleException
      */
     public function get(
@@ -128,15 +155,16 @@ class Wisdm
     }
 
 
-/*
+
+/* UPDATE AN OBJECT - PATCH METHOD
 ---------------------------------------------------------------------------- */
 
     /**
-     * @param string $path
-     * @param array $params
-     * @param array $body
-     * @param array $headers
-     * @return object
+     * @param string $path - URI of API call.
+     * @param array<string, string|int|float> $params - URI parameters of API call.
+     * @param array<string, mixed> $body - POST body parameters of API call.
+     * @param array<string, string|int|float> $headers - Optional HTTP headers.
+     * @return object - API response object.
      * @throws GuzzleException
      */
     public function update(
@@ -159,15 +187,16 @@ class Wisdm
     }
 
 
-/*
+
+/* DELETE OBJECT - DELETE METHOD
 ---------------------------------------------------------------------------- */
 
     /**
-     * @param string $path
-     * @param array $params
-     * @param array $body
-     * @param array $headers
-     * @return object
+     * @param string $path - URI of API call.
+     * @param array<string, string|int|float> $params - URI parameters of API call.
+     * @param array<string, mixed> $body - POST body parameters of API call.
+     * @param array<string, string|int|float> $headers - Optional HTTP headers.
+     * @return object - API response object.
      * @throws GuzzleException
      */
     public function delete(
@@ -190,7 +219,8 @@ class Wisdm
     }
 
 
-/*
+
+/* PARSE API URI
 ---------------------------------------------------------------------------- */
 
     private function parse_URI() : void
