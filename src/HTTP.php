@@ -61,8 +61,8 @@ class HTTP
             'base_uri'        => $this->base_uri,
             'verify'          => $verify,
             'http_errors'     => $errors,
-            'timeout'         => 600,
-            'connect_timeout' => 600
+            'timeout'         => 10,
+            'connect_timeout' => 10
         ]);
     }
 
@@ -171,8 +171,8 @@ class HTTP
                 uri: $this->base_uri . $uri,
             options: [
                 'headers' => $this->headers,
-                'query' => Query::build( $params ) ?: [],
-                'body' => json_encode( value: $body )
+                  'query' => Query::build( $params ) ?: [],
+                   'body' => json_encode( value: $body )
             ]
         );
 
@@ -258,9 +258,9 @@ class HTTP
     private function default_Headers() : array
     {
         return [
-            'X-API-Key' => $this->token,
+               'X-API-Key' => $this->token,
             'Content-type' => 'application/json; charset=utf-8',
-            'User-Agent' => 'API Client 1.0',
+              'User-Agent' => 'API Client 1.0',
         ];
     }
 }
