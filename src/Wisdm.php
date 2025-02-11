@@ -39,12 +39,15 @@ class Wisdm
      * @param Client|null $client Guzzle HTTP Client.
      * @param string|null $base_uri API Base URI.
      * @param string|null $token API Auth token.
+     * @param int $timeout Because some calls take several minutes,
+     *  this allows customer timeouts
      * @throws Exception
      */
     public function __construct(
           ?Client $client   = null,
           ?string $base_uri = null,
           ?string $token    = null,
+              int $timeout = 10
     )
     {
         if( !isset( $_ENV['WISDM_BASE_URI']) OR !isset( $_ENV['WISDM_TOKEN'] ) ) {
@@ -53,7 +56,8 @@ class Wisdm
         $this->http = new HTTP(
               client: $client,
             base_uri: $base_uri,
-               token: $token
+               token: $token,
+             timeout: $timeout
         );
     }
 

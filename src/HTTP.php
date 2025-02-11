@@ -50,7 +50,8 @@ class HTTP
         ?string $base_uri   = null,
         ?string $token      = null,
            bool $verify     = false,
-           bool $errors     = false
+           bool $errors     = false,
+            int $timeout    = 10,
     )
     {
         $this->base_uri = $base_uri ?? $_ENV['WISDM_BASE_URI'];
@@ -61,8 +62,8 @@ class HTTP
             'base_uri'        => $this->base_uri,
             'verify'          => $verify,
             'http_errors'     => $errors,
-            'timeout'         => 10,
-            'connect_timeout' => 10
+            'timeout'         => $timeout,
+            'connect_timeout' => $timeout
         ]);
     }
 
