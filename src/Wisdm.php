@@ -7,7 +7,7 @@ namespace Ocolin\Wisdm;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Ocolin\Env\EasyEnv;
+use Ocolin\EasyEnv\LoadEnv;
 
 class Wisdm
 {
@@ -51,7 +51,7 @@ class Wisdm
     )
     {
         if( !isset( $_ENV['WISDM_BASE_URI']) OR !isset( $_ENV['WISDM_TOKEN'] ) ) {
-            EasyEnv::loadEnv( path: __DIR__ . '/../.env', append: true );
+            new LoadEnv( files: __DIR__ . '/../.env', append: true );
         }
         $this->http = new HTTP(
               client: $client,

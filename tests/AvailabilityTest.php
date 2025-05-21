@@ -55,7 +55,7 @@ class AvailabilityTest extends TestBase
         $result = $wisdm->call(
             path: '/availability/{id}/postcode-lookup',
             params: [
-                'id' => 92,
+                'id' => 93,
                 'postcode' => '95060'
             ]
         );
@@ -76,13 +76,12 @@ class AvailabilityTest extends TestBase
         $result = $wisdm->call(
             path: '/availability/{id}/check',
             params: [
-                'id' => 92,
+                'id' => 93,
                 'latitude' => 36.983972,
                 'longitude' => -121.977748,
             ]
         );
         $this->globalTest( result: $result );
-        print_r( $result );
     }
 
 

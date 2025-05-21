@@ -116,7 +116,22 @@ class TestBase extends TestCase
                 'elevation_model_id' => 103,
                 'fresnel_min_clearage' => 1.0,
                 'max_range' => 14484,
-                'min_rsl' => -84
+                'min_rsl' => -84,
+                "viewshed_gain" => 20.0,
+                "viewshed_height" => 10.0,
+                "client_profiles" => [
+                    [
+                        "colour" => "#00FF00",
+                        "gain" => 20.0,
+                        "height" => 10.0,
+                        "interval" => 1.0,
+                        "min_confidence" => 1.0,
+                        "name" => "Points",
+                        "precedence" => 1,
+                        "testing_method" => "points",
+                        "use_mount_height" => false
+                    ]
+                ]
             ]
         );
     }
