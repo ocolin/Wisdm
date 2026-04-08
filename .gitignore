@@ -4,3 +4,4 @@ composer.phar
 !.env.example
 !.gitignore
 test.php
+dev

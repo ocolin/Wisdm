@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        bootstrap="vendor/autoload.php"
+        bootstrap="tests/bootstrap.php"
         colors="true"
         stopOnFailure="true"
         beStrictAboutChangesToGlobalState="true"
         cacheDirectory=".phpunit.cache"
         displayDetailsOnTestsThatTriggerWarnings="true"
+        displayDetailsOnTestsThatTriggerNotices="true"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
 >
     <testsuites>
-        <testsuite name="Models">
-            <file>tests/NetworksTest.php</file>
-            <file>tests/NetworksViewsTest.php</file>
-            <file>tests/LosModelsTest.php</file>
-            <file>tests/AvailabilityTest.php</file>
-<!--            <file>tests/PropertiesTest.php</file>-->
-            <file>tests/AntennasTest.php</file>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
         </testsuite>
     </testsuites>
+
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+
+    <coverage>
+        <report>
+            <html outputDirectory="coverage"/>
+            <text outputFile="php://stdout" showOnlySummary="true"/>
+        </report>
+    </coverage>
 </phpunit>
