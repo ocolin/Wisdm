@@ -4,242 +4,171 @@ declare( strict_types = 1 );
 
 namespace Ocolin\Wisdm;
 
-use Exception;
-use GuzzleHttp\Client;
+use Ocolin\Wisdm\Exceptions\HttpException;
 use GuzzleHttp\Exception\GuzzleException;
-use Ocolin\EasyEnv\LoadEnv;
 
 class Wisdm
 {
-    /**
-     * @var HTTP Guzzle HTTP object.
-     */
-    public HTTP $http;
-
-    /**
-     * @var string URI path
-     */
-    public string $path;
-
-    /**
-     * @var array<string, string|int|float> HTTP URI parameters
-     */
-    public array $params;
-
-    /**
-     * @var array<string, mixed>  HTTP request body
-     */
-    public array $body;
+    private HTTP $http;
 
 
 /* CONSTRUCTOR
----------------------------------------------------------------------------- */
+----------------------------------------------------------------------------- */
 
     /**
-     * @param Client|null $client Guzzle HTTP Client.
-     * @param string|null $base_uri API Base URI.
-     * @param string|null $token API Auth token.
-     * @param int $timeout Because some calls take several minutes,
-     *  this allows customer timeouts
-     * @throws Exception
+     * @param ?Config $config Data configuration object.
+     * @param ?HTTP $http Guzzle HTTP client for mocking.
      */
     public function __construct(
-          ?Client $client   = null,
-          ?string $base_uri = null,
-          ?string $token    = null,
-              int $timeout = 10
+        ?Config $config = null,
+        ?HTTP $http = null
     )
     {
-        if( !isset( $_ENV['WISDM_BASE_URI']) OR !isset( $_ENV['WISDM_TOKEN'] ) ) {
-            new LoadEnv( files: __DIR__ . '/../.env', append: true );
-        }
-        $this->http = new HTTP(
-              client: $client,
-            base_uri: $base_uri,
-               token: $token,
-             timeout: $timeout
-        );
+        $config     = $config ?? new Config();
+        $this->http = $http   ?? new HTTP( config: $config );
     }
 
 
 
-/* MAKE API CALL
----------------------------------------------------------------------------- */
+/* GET REQUEST
+----------------------------------------------------------------------------- */
 
     /**
-     * @param string $path - URI path of API call.
-     * @param string $method - HTTP Method of API call.
-     * @param array<string, string|int|float> $params - URL Parameters of API call.
-     * @param array<string, mixed> $body - POST body content for API call.
-     * @param array<string, string|int|float> $headers - Optional HTTP Headers to send.
-     * @return object API response object.
+     * @param string $endpoint API end point.
+     * @param array<string, string|int|float|bool>|object $query HTTP query
+     *   or path parameters.
+     * @return Response Client A response object.
+     * @throws GuzzleException|HttpException
      */
-    public function call(
-        string $path,
-        string $method  = 'GET',
-         array $params  = [],
-         array $body    = [],
-         array $headers = []
-    ) : object
+    public function get( string $endpoint, array|object $query = [] ) : Response
     {
-        $this->path   = $path;
-        $this->params = $params;
-        $this->parse_URI();
-
-        $method = strtolower( $method );
-
-        return $this->http->$method(
-                uri: $this->path,
-             params: $this->params,
-               body: $body,
-            headers: $headers
-        );
+        return $this->http->request( path: $endpoint, query: (array)$query );
     }
 
 
-/* CREATE AN OBJECT - POST METHOD
----------------------------------------------------------------------------- */
+
+/* POST (CREATE) REQUEST
+----------------------------------------------------------------------------- */
 
     /**
-     * @param string $path - URI path of API call.
-     * @param array<string, string|int|float> $params - URI parameters of API call.
-     * @param array<string, mixed> $body - POST body parameters of API call.
-     * @param array<string, string|int|float> $headers - Optional HTTP headers
-     * @return object - API response object
-     * @throws GuzzleException
+     * @param string $endpoint API end point.
+     * @param array<string, string|int|float|bool>|object $query HTTP
+     *   query or path parameters.
+     * @param array<string, mixed>|object $body HTTP POST body parameters.
+     * @return Response Client A response object.
+     * @throws GuzzleException|HttpException
      */
-    public function create(
-        string $path,
-         array $params  = [],
-         array $body    = [],
-         array $headers = []
-    ) : object
+    public function post(
+              string $endpoint,
+        array|object $query = [],
+        array|object $body = []
+    ) : Response
     {
-        $this->path   = $path;
-        $this->params = $params;
-        $this->parse_URI();
-
-        return $this->http->post(
-                uri: $this->path,
-             params: $this->params,
-               body: $body,
-            headers: $headers
+        return $this->http->request(
+              path: $endpoint,
+            method: 'POST',
+             query: (array)$query,
+              body: (array)$body
         );
     }
 
 
-/* GET AN OBJECT - GET METHOD
----------------------------------------------------------------------------- */
+
+/* PATCH (UPDATE) REQUEST
+----------------------------------------------------------------------------- */
 
     /**
-     * @param string $path - URI path of API call.
-     * @param array<string, string|int|float> $params - URI parameters of API call.
-     * @param array<string, mixed> $body - POST body parameters of API call.
-     * @param array<string, string|int|float> $headers - Optional headers.
-     * @return object - API response object.
-     * @throws GuzzleException
+     * @param string $endpoint API end point.
+     * @param array<string, string|int|float|bool>|object $query HTTP query
+     *    or path parameters.
+     * @param array<string, mixed>|object $body HTTP POST body parameters.
+     * @return Response Client A response object.
+     * @throws GuzzleException|HttpException
      */
-    public function get(
-        string $path,
-         array $params  = [],
-         array $body    = [],
-         array $headers = []
-    ) : object
+    public function patch(
+              string $endpoint,
+        array|object $query = [],
+        array|object $body = []
+    ) : Response
     {
-        $this->path   = $path;
-        $this->params = $params;
-        $this->parse_URI();
-
-        return $this->http->get(
-                uri: $this->path,
-             params: $this->params,
-               body: $body,
-            headers: $headers
+        return $this->http->request(
+              path: $endpoint,
+            method: 'PATCH',
+             query: (array)$query,
+              body: (array)$body
         );
     }
 
 
 
-/* UPDATE AN OBJECT - PATCH METHOD
----------------------------------------------------------------------------- */
+/* DELETE REQUEST
+----------------------------------------------------------------------------- */
 
     /**
-     * @param string $path - URI of API call.
-     * @param array<string, string|int|float> $params - URI parameters of API call.
-     * @param array<string, mixed> $body - POST body parameters of API call.
-     * @param array<string, string|int|float> $headers - Optional HTTP headers.
-     * @return object - API response object.
-     * @throws GuzzleException
+     * @param string $endpoint API end point.
+     * @param array<string, string|int|float|bool>|object $query HTTP query
+     *    or path parameters.
+     * @return Response Client A response object.
+     * @throws GuzzleException|HttpException
      */
-    public function update(
-        string $path,
-         array $params  = [],
-         array $body    = [],
-         array $headers = []
-    ) : object
+    public function delete( string $endpoint, array|object $query = [] ) : Response
     {
-        $this->path   = $path;
-        $this->params = $params;
-        $this->parse_URI();
-
-        return $this->http->patch(
-                uri: $this->path,
-             params: $this->params,
-               body: $body,
-            headers: $headers
+        return $this->http->request(
+              path: $endpoint,
+            method: 'DELETE',
+             query: (array)$query
         );
     }
 
 
 
-/* DELETE OBJECT - DELETE METHOD
----------------------------------------------------------------------------- */
+/* GENERAL REQUEST
+----------------------------------------------------------------------------- */
 
     /**
-     * @param string $path - URI of API call.
-     * @param array<string, string|int|float> $params - URI parameters of API call.
-     * @param array<string, mixed> $body - POST body parameters of API call.
-     * @param array<string, string|int|float> $headers - Optional HTTP headers.
-     * @return object - API response object.
-     * @throws GuzzleException
+     * @param string $endpoint API end point.
+     * @param string $method HTTP method to send.
+     * @param array<string, string|int|float|bool>|object $query HTTP query
+     *    or path parameters.
+     * @param array<string, mixed>|object $body HTTP POST body parameters.
+     * @return Response Client A response object.
+     * @throws GuzzleException|HttpException
      */
-    public function delete(
-        string $path,
-         array $params  = [],
-         array $body    = [],
-         array $headers = []
-    ) : object
+    public function request(
+              string $endpoint,
+              string $method,
+        array|object $query = [],
+        array|object $body = []
+    ) : Response
     {
-        $this->path   = $path;
-        $this->params = $params;
-        $this->parse_URI();
-
-        return $this->http->delete(
-                uri: $this->path,
-             params: $this->params,
-               body: $body,
-            headers: $headers
+        return $this->http->request(
+              path: $endpoint,
+            method: $method,
+             query: (array)$query,
+              body: (array)$body
         );
     }
 
+/* UPLOAD FILES
+----------------------------------------------------------------------------- */
 
-
-/* PARSE API URI
----------------------------------------------------------------------------- */
-
-    private function parse_URI() : void
+    /**
+     * @param string $endpoint API end point.
+     * @param string $filePath Path to files for uploading.
+     * @param array<string, mixed>|object $params HTTP POST body parameters.
+     * @return Response Client A response object.
+     * @throws HttpException|GuzzleException
+     */
+    public function upload(
+              string $endpoint,
+              string $filePath,
+        array|object $params = []
+    ) : Response
     {
-        if( str_contains( haystack: $this->path, needle: '{' )) {
-            foreach( $this->params as $key => $value ) {
-                if( str_contains( haystack: $this->path, needle: '{' . $key . '}' )) {
-                    $this->path = str_replace(
-                         search: '{' . $key . '}',
-                        replace: (string)$value,
-                        subject: $this->path
-                    );
-                    unset( $this->params[$key] );
-                }
-            }
-        }
+        return $this->http->upload(
+                path: $endpoint,
+            filePath: $filePath,
+              params: (array)$params
+        );
     }
 }

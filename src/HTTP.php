@@ -5,262 +5,211 @@ declare( strict_types = 1 );
 namespace Ocolin\Wisdm;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Query;
+use Ocolin\Wisdm\Exceptions\HttpException;
 use Psr\Http\Message\ResponseInterface;
-use stdClass;
 
 class HTTP
 {
+    /**
+     * @var ClientInterface Guzzle client.
+     */
+    private ClientInterface $client;
 
     /**
-     * @var Client Guzzle HTTP Client.
+     * List of valid HTTP methods for this API.
      */
-    public Client $client;
-
-    /**
-     * @var string API Base URI.
-     */
-    public string $base_uri;
-
-    /**
-     * @var string API Auth Token.
-     */
-    public string $token;
-
-    /**
-     * @var array<float|int|string> HTTP headers.
-     */
-    public array $headers;
+    private const array VALID_METHODS = [
+        'GET',
+        'POST',
+        'PATCH',
+        'DELETE',
+    ];
 
 
 /* CONSTRUCTOR
----------------------------------------------------------------------------- */
+----------------------------------------------------------------------------- */
 
     /**
-     * @param Client|null $client Guzzle HTTP client.
-     * @param string|null $base_uri API Base URI.
-     * @param string|null $token API Auth token.
-     * @param bool $verify Option to verify SSL Certificate.
-     * @param bool $errors Option to stop on HTTP errors.
+     * @param Config $config Configuration data object.
+     * @param ?ClientInterface $client Guzzle client for mocking.
      */
     public function __construct(
-        ?Client $client     = null,
-        ?string $base_uri   = null,
-        ?string $token      = null,
-           bool $verify     = false,
-           bool $errors     = false,
-            int $timeout    = 10,
+        readonly private Config $config,
+        ?ClientInterface $client = null
     )
     {
-        $this->base_uri = $base_uri ?? $_ENV['WISDM_BASE_URI'];
-        $this->token    = $token    ?? $_ENV['WISDM_TOKEN'];
-        $this->headers  = $this->default_Headers();
-
-        $this->client   = $client   ?? new Client([
-            'base_uri'        => $this->base_uri,
-            'verify'          => $verify,
-            'http_errors'     => $errors,
-            'timeout'         => $timeout,
-            'connect_timeout' => $timeout
-        ]);
+        $this->client = $client ?? new Client(
+            array_merge(
+                $this->config->options,
+                [
+                    'base_uri' => rtrim(
+                            string: $this->config->host, characters: '/'
+                        ) . '/',
+                    'http_errors' => false,
+                    'headers'    => [
+                        'X-API-Key' => $this->config->token,
+                        'User-Agent' => 'Ocolin Client 3.0'
+                    ],
+                ]
+            )
+        );
     }
 
 
 
-/* GET METHOD
----------------------------------------------------------------------------- */
+/* MAKE HTTP REQUEST
+----------------------------------------------------------------------------- */
 
     /**
-     * Retrieve an object or list of objects.
-     *
-     * @param string $uri URI of API call
-     * @param array<string, string|int|float> $params GET params
-     * @param array<string, mixed>|object|string|null $body POST Body
-     * @param array<string, string|int|float> $headers Optional headers
-     * @return object API response object
-     * @throws GuzzleException
+     * @param string $path URI endpoint path.
+     * @param string $method HTTP method.
+     * @param array<string, string|int|float|bool> $query HTTP query and path paremeters.
+     * @param array<string, mixed> $body HTTP POST body parameters.
+     * @return Response Client response object.
+     * @throws GuzzleException|HttpException
      */
-
-    public function get(
-         string $uri,
-          array $params = [],
-          array|object|string|null $body = [],
-          array $headers = []
-    ) : object
+    public function request(
+        string $path,
+        string $method = 'GET',
+         array $query = [],
+         array $body = [],
+    ) : Response
     {
-        $this->headers = array_merge( $this->headers, $headers );
-        $options = [
-            'headers' => $this->headers,
-              'query' => Query::build( $params )
+        $method = strtoupper( string: $method );
+        if( !in_array(
+            needle: $method, haystack: self::VALID_METHODS, strict: true )
+        ) {
+            throw new HttpException(  message: "Invalid HTTP method: {$method}" );
+        }
+
+        $path = self::buildPath( path: $path, query: $query );
+
+        $options = [];
+        if( !empty( $query )) { $options['query'] = $query; }
+        if( !empty( $body ))  { $options['json']  = $body;  }
+
+        return self::buildResponse(
+            response: $this->client->request(
+                 method: $method,
+                    uri: $path,
+                options: $options,
+            )
+        );
+    }
+
+
+
+/* UPLOAD CONTENTS TO API
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param string $path URI endpoint path.
+     * @param string $filePath Path to upload file.
+     * @param array<string, mixed> $params POST body parameters.
+     * @return Response Client response object.
+     * @throws GuzzleException|HttpException
+     */
+    public function upload(
+        string $path,
+        string $filePath,
+         array $params = []
+    ): Response
+    {
+        $multi = [];
+        $resource = fopen( filename: $filePath, mode: 'r' );
+        if( $resource === false ) {
+            throw new HttpException( message: "Cannot open file: {$filePath}" );
+        }
+
+        $multi[] = [
+            'name'     => 'file',
+            'contents' => $resource,
+            'filename' => basename( path: $filePath )
         ];
 
-        $request = $this->client->request(
-             method: 'GET',
-                uri: $this->base_uri . $uri,
-            options: $options
-        );
-
-        return self::returnResults( request: $request );
-    }
-
-
-
-/* POST METHOD
----------------------------------------------------------------------------- */
-
-    /**
-     * Create an object.
-     *
-     * @param string $uri API URI.
-     * @param array<string, string|int|float> $params HTTP GET parameters.
-     * @param array<object>|object|null $body HTTP body parameters.
-     * @param array<string, string|int|float> $headers Optional headers
-     * @return object API response object
-     * @throws GuzzleException
-     */
-
-    public function post(
-        string $uri,
-         array $params  = [],
-         array|object|string|null $body = [],
-         array $headers = []
-    ) : object
-    {
-        $this->headers = array_merge( $this->headers, $headers );
-        $request = $this->client->request(
-             method: 'POST',
-            uri: $this->base_uri . $uri,
-            options: [
-                'headers' => $this->headers,
-                  'query' => Query::build( $params ) ?: [],
-                   'body' => json_encode( value: $body )
-            ]
-        );
-
-        return self::returnResults( request: $request );
-    }
-
-
-
-/* PATCH METHOD
----------------------------------------------------------------------------- */
-
-    /**
-     * Update an object.
-     *
-     * @param string $uri API URI.
-     * @param array<string, string|int|float> $params HTTP GET parameters.
-     * @param array<object>|object|null $body HTTP body parameters.
-     * @param array<string, string|int|float> $headers Optional HTTP headers.
-     * @return object API response object.
-     * @throws GuzzleException
-     */
-
-    public function patch(
-        string $uri,
-         array $params  = [],
-         array|object|string|null $body = [],
-         array $headers = []
-    ) : object
-    {
-        //$uri = self::formatParams( params: $params, uri: $uri );
-        $this->headers = array_merge( $this->headers, $headers );
-        $request = $this->client->request(
-             method: 'PATCH',
-                uri: $this->base_uri . $uri,
-            options: [
-                'headers' => $this->headers,
-                  'query' => Query::build( $params ) ?: [],
-                   'body' => json_encode( value: $body )
-            ]
-        );
-
-        return self::returnResults( request: $request );
-    }
-
-
-
-/* DELETE METHOD
----------------------------------------------------------------------------- */
-
-    /**
-     * Delete an existing object.
-     *
-     * @param string $uri API URI.
-     * @param array<string, string|int|float> $params HTTP GET parameters.
-     * @param array<object> $body HTTP body parameters.
-     * @param array<string, string|int|float> $headers Optional HTTP headers.
-     * @return object API response object.
-     * @throws GuzzleException
-     */
-
-    public function delete(
-        string $uri,
-         array $params = [],
-         array|object|string|null $body = [],
-         array $headers = []
-    ) : object
-    {
-        $this->headers = array_merge( $this->headers, $headers );
-        $request = $this->client->request(
-             method: 'DELETE',
-                uri: $this->base_uri . $uri,
-            options: [ 'headers' => $this->headers ]
-        );
-
-        return self::returnResults( request: $request );
-    }
-
-
-
-/* FORMAT RESPONSE
----------------------------------------------------------------------------- */
-
-    /**
-     * Format the Guzzle HTTP request response into an array
-     *
-     * @param ResponseInterface $request Guzzle response object.
-     * @return object API response object.
-     */
-
-    private static function returnResults( ResponseInterface $request ) : object
-    {
-        $response = new stdClass();
-        $response->status = $request->getStatusCode();
-        $response->status_message = $request->getReasonPhrase();
-        $response->body = $request->getBody()->getContents();
-
-        $headers = $request->getHeaders();
-
-        if( str_starts_with(
-            haystack: $headers['Content-Type'][0],
-              needle: 'application/json' )
-        ) {
-            $response->body = json_decode( json: (string)$response->body );
+        foreach( $params as $name => $value )
+        {
+            if( !is_scalar( $value)) {
+                throw new HttpException( message: "Invalid param value: {$name}" );
+            }
+            $multi[] = [ 'name' => $name, 'contents' => (string)$value ];
         }
+
+        $response =  self::buildResponse( $this->client->request(
+             method: 'POST',
+                uri: $path,
+            options: [ 'multipart' => $multi ]
+        ));
+        fclose( $resource );
 
         return $response;
     }
 
 
 
-/* DEFAULT SEND HEADERS
----------------------------------------------------------------------------- */
+/* BUILD URI PATH
+----------------------------------------------------------------------------- */
 
     /**
-     * Generate a default set of headers so none are needed for most queries. Includes
-     *  the authentication token which can be overridden with each call if specified.
+     * Replaces any variable tokens in URI path and replaces with values.
      *
-     *  @return array<string, string> Array of HTTP request headers
+     * @param string $path HTTP URI path.
+     * @param array<string, string|int|float|bool> $query HTTP query and path
+            parameters.
+     * @return string Interpolated URI path.
      */
-
-    private function default_Headers() : array
+    private static function buildPath( string $path, array &$query ): string
     {
-        return [
-               'X-API-Key' => $this->token,
-            'Content-type' => 'application/json; charset=utf-8',
-              'User-Agent' => 'API Client 1.0',
-        ];
+        $path = ltrim( string: $path, characters: '/' );
+        if( !str_contains( haystack: $path, needle: '{' )) { return $path; }
+
+        foreach( $query as $key => $value )
+        {
+            if( str_contains( haystack: $path, needle: "{{$key}}" )) {
+                $path = str_replace(
+                    search: "{{$key}}", replace: (string)$value, subject: $path
+                );
+                unset( $query[$key] );
+            }
+        }
+
+        return $path;
+    }
+
+
+
+/* BUILD HTTP RESPONSE OBJECT
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param ResponseInterface $response Guzzle PSR Response object.
+     * @return Response API client response object.
+     * @throws HttpException
+     */
+    private static function buildResponse( ResponseInterface $response ): Response
+    {
+        $contentType = $response->getHeaderLine( 'Content-Type' );
+        if( str_contains( haystack: $contentType, needle: 'application/json' )) {
+            $body = json_decode( json: $response->getBody()->getContents());
+
+            if ( json_last_error() !== JSON_ERROR_NONE ) {
+                throw new HttpException(
+                    message: 'Failed to decode JSON response: ' . json_last_error_msg()
+                );
+            }
+        }
+        else {  $body = $response->getBody()->getContents(); }
+
+
+
+        return new Response(
+            status:        $response->getStatusCode(),
+            statusMessage: $response->getReasonPhrase(),
+            headers:       $response->getHeaders(),
+            contentType:   $contentType,
+            body:          $body,
+        );
     }
 }
